@@ -1,6 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { findServiceById } from "@/lib/repository/ServiceRepository";
+import {
+  getServiceById as findServiceById,
+  getServices as findServices,
+  createService,
+  setService ,
+} from "@/lib/repository/ServiceRepository";
 import { Service } from "@/lib/interfaces/Service";
 
 /**
@@ -16,7 +21,7 @@ export async function getService(req: NextApiRequest, res: NextApiResponse) {
       res.status(400).json({ error: "Invalid request: 'id' is required." });
     }
 
-    const service: Service | null = await findServiceById(id);
+    const service: Service | undefined = await findServiceById(id);
 
     if (!service) {
       res.status(400).json({ error: "Service not found." });
@@ -29,17 +34,33 @@ export async function getService(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export async function getServices(req: NextApiRequest, res: NextApiResponse) {
-  console.error(`FAIL: TODO`);
+export async function getServices(res: NextApiResponse) {
+  try {
+    const services: Array<Service> | undefined = await findServices();
+
+    if (!services) {
+      res.status(400).json({ error: "There are no services" });
+    }
+
+    res.status(200).json(services);
+  } catch (e) {
+    throw new Error(`Services fetch failed with error: ${e}`);
+  }
 }
 
 export async function saveService(req: NextApiRequest, res: NextApiResponse) {
-  console.error(`FAIL: TODO`);
+  const { service } = req.body;
+
+  if (!service) {
+    res.status(500).json({ error: "something failed saving service" });
+  }
+
+  createService(service);
+  res.status(200).json(service);
 }
 
 export async function updateService(req: NextApiRequest, res: NextApiResponse) {
-  console.error(`FAIL: TODO`);
 }
 export async function deleteService(req: NextApiRequest, res: NextApiResponse) {
-  console.error(`FAIL: TODO`);
+  throw new Error(`FAIL: TODO`);
 }
