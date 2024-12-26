@@ -37,10 +37,9 @@ export async function saveService(req: NextApiRequest, res: NextApiResponse) {
   console.error(`FAIL: TODO`);
 }
 
-export async function deleteService(req: NextApiRequest, res: NextApiResponse) {
+export async function updateService(req: NextApiRequest, res: NextApiResponse) {
   console.error(`FAIL: TODO`);
 }
-
-export async function updateService(req: NextApiRequest, res: NextApiResponse) {
+export async function deleteService(req: NextApiRequest, res: NextApiResponse) {
   console.error(`FAIL: TODO`);
 }
