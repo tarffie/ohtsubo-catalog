@@ -14,7 +14,7 @@ const assemblePostgresConnectionString = () => {
 };
 
 export default defineConfig({
-  schema: "./src/lib/db/schema.ts",
+  schema: "./src/lib/database/schema.ts",
   out: "./migrations",
   dialect: "postgresql",
   dbCredentials: {
