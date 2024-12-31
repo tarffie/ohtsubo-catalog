@@ -15,7 +15,7 @@ export default function Form({ children }: Props) {
 
     // when finish we wanna call little side bar menu to finish or
     // keep buying. might have to save cookie
-    console.log('submited')
+
   };
 
   return (

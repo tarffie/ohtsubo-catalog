@@ -1,24 +1,41 @@
-import { Service } from "@/lib/interfaces/Service";
+import { ServiceInput, Service } from "@/lib/interfaces/Service";
+import { numberToBoolean } from "@/lib/utils/numberToBoolean";
 
 /**
- * a function that gets a target, a method and returns a json from api
+ * a function that gets a method, desired arguments and possibly a request body
+ * and returns a {Service} json from api
  * since it runs inside docker and the other components, it can fetch data from localhost
  * might have to implement a exaustive targeting later
- * @param {string} target
+ *
  * @param {string} method
- * @return {Service} json
+ * @return {Service | undefined} json
+ * @throws {Error} error
  */
 
-export async function fetchFromApi(
-  target: string,
+export async function fetchServiceFromApi(
   method: string = "GET",
   args?: string,
-): Promise<Object> {
-  const response = await fetch(`http://localhost:3000/api/${target}/${args}`, {
-    method: method,
-  });
+  ...options: RequestInit[]
+): Promise<Service> {
+  const url = `http://localhost:3000/api/services/${args}`;
 
-  const data: Object = await response.json();
+  try {
+    const response = await fetch(url, {
+      method: method.toUpperCase(),
+      ...options,
+    }).then((res) => res.json());
 
-  return data;
+    // we always store ids with BigInt when working with typescript
+    const parsed: Service = {
+      ...response,
+      availabilityqStatus: numberToBoolean(response.availabilityStatus),
+    };
+
+    return parsed;
+  } catch (e) {
+    // typescript doesn't let me use {e} because e has type {any}
+    const error = e as Error;
+    console.error(`failed with error: ${error.name}`);
+    throw new Error(error.message);
+  }
 }
