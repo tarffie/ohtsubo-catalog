@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { FaArrowLeft, FaShoppingCart } from "react-icons/fa";
 
-export default function HeaderProduct() {
+export default function Header() {
   return (
     <nav className="align-middle">
       <div className="mx-auto max-w-7xl">
@@ -13,7 +13,6 @@ export default function HeaderProduct() {
             </Link>
           </div>
 
-          {/* the freaking search bar.. */}
           <div className="">
             <FaShoppingCart />
           </div>

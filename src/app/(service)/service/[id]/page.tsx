@@ -1,7 +1,7 @@
 import React from "react";
 
 import { ServiceInput as Service } from "@/lib/interfaces/Service";
-import FormComponent from "@/app/components/FormComponent";
+import Form from "./form";
 
 export default async function Page({
   params,
@@ -23,11 +23,6 @@ export default async function Page({
 
   const data: Service = await response.json();
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    // prevent page reload
-    event.preventDefault();
-  };
-
   const handleChange = (event: React.FormEvent) => {};
 
   return (
@@ -35,7 +30,9 @@ export default async function Page({
       <p className="border border-solid border-white">{data.title}</p>
       <p className="border border-solid border-white">{data.description}</p>
       <p className="border border-solid border-white">{data.price}</p>
-      <FormComponent />
+      <Form>
+        {data}
+      </Form>
     </div>
   );
 }

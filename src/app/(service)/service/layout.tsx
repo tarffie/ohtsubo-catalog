@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/app/globals.css";
 
-import HeaderProduct from "@/app/components/HeaderProduct";
+import Header from "./header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +31,7 @@ export default function ProductLayout({
         className={`${geistSans.variable} ${geistMono.variable} product-layout antialised`}
       >
         <div>
-          <HeaderProduct />
+          <Header />
           {children}
         </div>
       </body>

@@ -1,4 +1,4 @@
-import HomeButtonRow from "@/app/components/homeButtonRow";
+import HomeButtonRow from "@/app/components/HomeButtonRow";
 import Hero from "@/app/components/Hero";
 import { ServiceList } from "@/app/components/ServiceList";
 
