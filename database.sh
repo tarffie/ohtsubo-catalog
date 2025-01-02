@@ -1,0 +1,1 @@
+psql postgresql://postgres:8peDrkX24n3lB8vfNpuo22fTfoMvGJA2swYu76SAdHkE0mEfkxyQ9mpp0s58ZnEaF@127.0.0.3:5433/catalog_db
