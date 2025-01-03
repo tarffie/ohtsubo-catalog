@@ -3,7 +3,6 @@ import Image from "next/image";
 
 import thumbnail from "@/assets/template.jpg";
 
-import { ServiceInput as Service } from "@/lib/interfaces/Service";
 import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
 
 import Form from "./form";
@@ -63,6 +62,7 @@ export default async function Page({
       {/*
        * logic to display side bar should come first
        */}
+      {isSidebarVisible && (<Sidebar />)}
       <Image
         className="rounded block"
         src={thumbnail}
@@ -72,9 +72,8 @@ export default async function Page({
       />
 
       <div className="">
-        {" "}
         {/* item-card? */}
-        <p className="text-lg">Ohtsubo Terapias</p>
+        <p className="text-lg ">Ohtsubo Terapias</p>
       </div>
 
       <p className="border border-solid border-white text-xl">

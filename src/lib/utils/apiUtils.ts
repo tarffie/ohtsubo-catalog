@@ -16,19 +16,19 @@ export async function fetchServiceFromApi(
   method: string = "GET",
   args?: string,
   ...options: RequestInit[]
-): Promise<Service> {
+): Promise<ServiceInput> {
   const url = `http://localhost:3000/api/services/${args}`;
 
   try {
-    const response = await fetch(url, {
+    const response: Service = await fetch(url, {
       method: method.toUpperCase(),
       ...options,
     }).then((res) => res.json());
 
     // we always store ids with BigInt when working with typescript
-    const parsed: Service = {
+    const parsed: ServiceInput = {
       ...response,
-      availabilityqStatus: numberToBoolean(response.availabilityStatus),
+      availabilityStatus: numberToBoolean(response.availabilityStatus),
     };
 
     return parsed;
