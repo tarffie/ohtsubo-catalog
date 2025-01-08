@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 
@@ -7,25 +9,16 @@ import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
 
 import Form from "./form";
 import Sidebar from "./sidebar";
+import { useServiceContext } from "@/lib/providers/ServiceProvider";
+import { notFound } from "next/navigation";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  let isSidebarVisible: boolean = false;
-
+export default function Page() {
   /**
    * <image on the left>
    * <text on the right>
    * <button to buy below>
    */
 
-  const { id } = await params;
-
-  const service = await fetchServiceFromApi("get", id);
-
-  console.log(service);
   /*
     (page)
   |>-------------<
@@ -57,36 +50,36 @@ export default async function Page({
   |>------------------------------------->
   **/
 
+  const { isSidebarVisible, currentService } = useServiceContext();
+
+  if (currentService === undefined) return notFound();
+
+  const brand = "Ohtsubo Terapias";
+
   return (
-    <div className="place-items-center items-center grid grid-cols-1 md:grid-cols-2 font-bold min-h-screen">
+    <div className="place-items-center items-center grid-rows grid grid-cols-1 md:grid-cols-2 font-bold min-h-screen">
       {/*
        * logic to display side bar should come first
        */}
-      {isSidebarVisible && (<Sidebar />)}
-      <Image
-        className="rounded block"
-        src={thumbnail}
-        alt="thumbnail com título e fundo"
-        width={348}
-        height={348}
-      />
-
-      <div className="">
-        {/* item-card? */}
-        <p className="text-lg ">Ohtsubo Terapias</p>
+      {isSidebarVisible ? <Sidebar /> : null}
+      <div className="mt-auto ">
+        <Image
+          className="rounded block -mb-10"
+          src={thumbnail}
+          alt="thumbnail com título e fundo"
+          width={348}
+          height={348}
+        />
       </div>
-
-      <p className="border border-solid border-white text-xl">
-        {service.title}
-      </p>
-      <p className="border border-solid border-white text-xl">
-        {service.price}
-      </p>
-      <p className="border border-solid border-white text-md">
-        {service.description}
-      </p>
-      {/* decided to put all form related logic inside a component o> */}
-      <Form>{service}</Form>
+      <div className="">
+        {currentService ? (
+          <Form>{currentService}</Form>
+        ) : (
+          <div>
+            <p> Loading service.. </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -16,8 +16,8 @@ export async function fetchServiceFromApi(
   method: string = "GET",
   args?: string,
   ...options: RequestInit[]
-): Promise<ServiceInput> {
-  const url = `http://localhost:3000/api/services/${args}`;
+): Promise<any> {
+  const url = `http://172.21.0.3:3000/api/services/${args}`;
 
   try {
     const response: Service = await fetch(url, {
