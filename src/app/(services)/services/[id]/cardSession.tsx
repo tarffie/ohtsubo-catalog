@@ -8,8 +8,6 @@ interface Props {
 }
 
 export default function CardSession({ service }: Props) {
-  const targets = ["title", "price", "description"];
-
   return (
     <div className={/*TODO*/ ""}>
       <ItemCard content={"Ohtsubo Terapias"} />

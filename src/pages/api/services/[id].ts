@@ -20,7 +20,7 @@ export default async function handler(
   try {
     switch (method) {
       case "GET":
-        const service = await getServiceById(id.toString());
+        const service = await getServiceById(BigInt(id));
 
         if (service === undefined) {
           return res

@@ -1,5 +1,4 @@
 export interface Config {
-  // database parameters
   POSTGRESDB_USER: string;
   POSTGRESDB_ROOT_PASSWORD: string;
   POSTGRESDB_URL: string;

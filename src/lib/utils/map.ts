@@ -1,12 +1,19 @@
 import { ServiceInput } from "../interfaces/Service";
 
+/**
+ * function to map element with type ServiceInput to Service so we
+ * send it to database and do database operations
+ *@param {ServiceInput} body body from request
+ *@return {Service} parsedBody
+ */
+
 export const mapToService = (body: ServiceInput): ServiceInput => ({
   id: body.id,
   title: body.title || "",
   description: body.description || "",
   price: body.price || 0,
   availabilityStatus: body.availabilityStatus ?? false,
-  minimumOrderQuantity: body.minimumOrderQuantity || 0,
+  quantity: body.quantity || 0,
 });
 
 /**

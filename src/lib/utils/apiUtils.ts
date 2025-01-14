@@ -39,3 +39,7 @@ export async function fetchServiceFromApi(
     throw new Error(error.message);
   }
 }
+
+export const isServiceUndefined = (service: any) => {
+  return service === undefined ? true : false
+}

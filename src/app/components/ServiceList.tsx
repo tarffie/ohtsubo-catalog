@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 
 import { ServiceCard } from "@/app/components/ServiceCard";
 import { Service } from "@/lib/interfaces/Service";
+import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
 
 export const ServiceList = () => {
   const [services, setServices] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
+
         const data = await fetch(`https://dummyjson.com/products`).then(
           (response) => response.json(),
         );

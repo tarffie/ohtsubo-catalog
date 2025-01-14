@@ -4,7 +4,7 @@ export interface Service {
   description: string;
   price: number;
   availabilityStatus: number;
-  minimumOrderQuantity: number;
+  quantity: number;
 }
 
 export interface ServiceInput {
@@ -13,5 +13,5 @@ export interface ServiceInput {
   description?: string;
   price?: number;
   availabilityStatus?: boolean;
-  minimumOrderQuantity?: number;
+  quantity?: number;
 }

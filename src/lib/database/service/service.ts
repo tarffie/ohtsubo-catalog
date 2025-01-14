@@ -5,7 +5,7 @@ import {
   getServices as findServices,
   createService,
   setService ,
-} from "@/lib/repository/ServiceRepository";
+} from "@/lib/repository/serviceRepository";
 import { Service } from "@/lib/interfaces/Service";
 
 /**

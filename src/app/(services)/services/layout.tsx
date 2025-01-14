@@ -6,7 +6,11 @@ import "@/app/globals.css";
 
 import Header from "./header";
 
-import { ServiceProvider as Providers } from "@/lib/providers/ServiceProvider";
+import {
+  ServiceProvider as Providers,
+  useServiceContext,
+} from "@/lib/providers/ServiceProvider";
+import NotFound from "@/pages/404";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +27,8 @@ export default function ProductLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { currentService } = useServiceContext();
+
   return (
     <html lang="pt">
       <body

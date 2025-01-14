@@ -6,14 +6,14 @@ import React, {
   useState,
 } from "react";
 
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { fetchServiceFromApi } from "../utils/apiUtils";
-import { ServiceInput, Service } from "@/lib/interfaces/Service";
+import { ServiceInput } from "@/lib/interfaces/Service";
 
 interface ServiceContextType {
-  isSidebarVisible: boolean;
-  setIsSidebarVisible: Function;
   currentService: ServiceInput | undefined;
+  shoppingCart: ServiceInput[] | [];
+  setShoppingCart: Function;
 }
 
 interface ChildrenProps {
@@ -23,32 +23,32 @@ interface ChildrenProps {
 const noop = () => {};
 
 const ServiceContext = createContext<ServiceContextType>({
-  isSidebarVisible: false,
-  setIsSidebarVisible: noop,
   currentService: undefined,
+  shoppingCart: [],
+  setShoppingCart: noop,
 });
 
 export function ServiceProvider({ children }: ChildrenProps) {
   const [currentService, setCurrentService] = useState<ServiceInput>();
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [shoppingCart, setShoppingCart] = useState([]);
 
   const searchParams = useParams();
   const id = searchParams?.id;
 
   useEffect(() => {
     if (id) {
-      fetchServiceFromApi("get", `${id}`)
-        .then((data) => setCurrentService(data))
-        .catch((error) => console.error(error));
+      fetchServiceFromApi("get", `${id}`).then((data) =>
+        setCurrentService(data),
+      );
     } else {
-
+      return notFound();
     }
   }, [id]);
 
   const contextValue = {
-    isSidebarVisible,
     currentService,
-    setIsSidebarVisible,
+    shoppingCart,
+    setShoppingCart,
   };
 
   return (
