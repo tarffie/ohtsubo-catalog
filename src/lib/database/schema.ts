@@ -22,7 +22,10 @@ export const PurchaseSchema = pgTable("purchases", {
   id: bigint("id", { mode: "bigint" }).primaryKey(),
   userId: bigint("user_id", { mode: "bigint" })
     .notNull()
-    .references(() => UserSchema.id), // Correct reference
+    .references(() => UserSchema.id),
+  serviceId: bigint("service_id", { mode: "bigint" })
+    .notNull()
+    .references(() => ServiceSchema.id),
   price: real("price").default(0.0).notNull(),
   status: integer("status").default(0).notNull(),
   date: timestamp("date").notNull().defaultNow(),
@@ -30,7 +33,7 @@ export const PurchaseSchema = pgTable("purchases", {
 
 export const UserSchema = pgTable("users", {
   id: bigint("id", { mode: "bigint" }).primaryKey().notNull().unique(),
-  //username: varchar("username").notNull().unique(),
+  username: varchar("username").notNull().unique(),
   email: varchar("email", { length: 255 }).notNull(),
   password: varchar("password", { length: 255 }).notNull(),
 });
