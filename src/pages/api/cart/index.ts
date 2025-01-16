@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { ServiceSchema as ServiceEntity } from "@/lib/entities/Service";
 import { createPurchase } from "@/lib/repository/purchaseRepository";
 import { Status } from "@/lib/enums/Status";
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   try {
     if (req.method == "POST") {
-      const body = await req.body;
+      const body = await req.body[0];
 
       const service = {
         id: body.id,
@@ -20,15 +20,28 @@ export default async function handler(
         quantity: body.quantity,
       };
 
+      const services = new Array(service);
+      const timeNow = new Date();
+
       const purchase = {
         price: service.price,
         status: Status.PENDING,
-        services: new Array(service),
-        date: new Date(),
+        services: services,
+        date: timeNow,
       };
 
-      createPurchase(purchase);
-      return res.status(200).json({ success: true });
+      createPurchase(
+        purchase.price,
+        purchase.status,
+        purchase.services,
+        BigInt(0),
+      );
+
+      return res.status(200).json({
+        success: true,
+        purchase: purchase,
+        headers: req.headers,
+      });
     }
   } catch (e) {
     console.error(e);

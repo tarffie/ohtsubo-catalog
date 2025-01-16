@@ -1,6 +1,9 @@
 import { db } from "@/lib/database/db";
 import { Purchase } from "@/lib/interfaces/Purchase";
+import { Service, ServiceInput } from "@/lib/interfaces/Service";
 import { PurchaseSchema as purchases } from "../database/schema";
+
+import { eq } from "drizzle-orm/expressions";
 
 export const getPurchaseById = async (
   id: bigint,
@@ -12,22 +15,53 @@ export const getPurchases = async (): Promise<Array<Purchase> | undefined> => {
   return undefined;
 };
 
-export const createPurchase = async (purchase: Purchase) => {
-  const data = Object.values(purchase);
-  await db.insert(purchases).values(data);
+export const createPurchase = async (
+  price: number,
+  status: number,
+  services: Service[] | ServiceInput[],
+  userId: bigint,
+) => {
+  const currentDate = new Date();
+  const id = BigInt(await getPurchaseRowCount());
+
+  let purchase = {
+    id,
+    userId,
+    price,
+    status,
+    currentDate,
+    services,
+  };
+
+  await db.insert(purchases).values(purchase);
 };
 
 export const updatePurchase = async (purchase: Purchase) => {
+  let { price, status, services, date } = purchase;
+
+  let id = BigInt(String(purchase.id));
+  let userId = BigInt(String(purchase.userId));
+
+  let updatedPurchase = {
+    id,
+    userId,
+    price,
+    status,
+    date,
+    services,
+  };
+
   await db
     .update(purchases)
-    .set({
-      price: purchase.price,
-      status: purchase.status,
-      services: purchase.services,
-    })
+    .set(updatedPurchase)
     .where(eq(purchases, purchase.id));
 };
 
 export const deletePurchase = async (id: string) => {
   db.delete(purchases).where(eq(purchases, id));
+};
+
+export const getPurchaseRowCount = async (): Promise<number> => {
+  const rows = await db.query.PurchaseSchema.findMany();
+  return Object.keys(rows).length;
 };

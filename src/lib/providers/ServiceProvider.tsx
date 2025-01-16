@@ -12,7 +12,7 @@ import { ServiceInput } from "@/lib/interfaces/Service";
 
 interface ServiceContextType {
   currentService: ServiceInput | undefined;
-  shoppingCart: ServiceInput[] | [];
+  shoppingCart: Array<ServiceInput> | [];
   setShoppingCart: Function;
 }
 

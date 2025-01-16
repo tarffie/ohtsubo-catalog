@@ -46,17 +46,17 @@ export default function Form() {
       });
     }
 
+    const shoppingJson = JSON.stringify(shoppingCart);
+
     try {
-      const res = await fetch("/api/add-to-cart", {
+      const res = await fetch("/api/cart", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(shoppingCart),
+        body: shoppingJson,
       });
 
-      console.log(res, shoppingCart);
-
       if (res.ok) {
-        router.push("/cart");
+        return router.push("/cart");
       } else {
         console.error("Falha ao adicionar item ao carrinho");
       }
@@ -64,7 +64,7 @@ export default function Form() {
       console.error(e);
     }
   };
-  console.log("shoppingCart at beggining: ", shoppingCart);
+
   return (
     <form className="mb-auto text-center" onSubmit={handleSubmit}>
       {currentService ? (
@@ -74,10 +74,9 @@ export default function Form() {
       )}
       <div>
         <div>
-          <button type="button" onClick={qtyDecrement}>
-            {" "}
-            -{" "}
-          </button>
+          <a href="#" onClick={qtyDecrement}>
+            -
+          </a>
           <input
             type="number"
             id="quantity"
@@ -87,10 +86,9 @@ export default function Form() {
             value={formData.quantity}
             onChange={handleChange}
           />
-          <button type="button" onClick={qtyIncrement}>
-            {" "}
-            +{" "}
-          </button>
+          <a href="#" onClick={qtyIncrement}>
+            +
+          </a>
         </div>
         <div>
           <button
