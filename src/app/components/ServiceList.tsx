@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react";
 
 import { ServiceCard } from "@/app/components/ServiceCard";
-import { Service, ServiceInput } from "@/lib/interfaces/Service";
+import { ServiceInput as Service } from "@/lib/interfaces/Service";
 import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
 
 const noop = () => {};
 
 export const ServiceList = () => {
-  const [services, setServices] = useState(new Array<ServiceInput>());
+  const [services, setServices] = useState(new Array<Service>());
 
   useEffect(() => {
     (async () => {
@@ -17,10 +17,10 @@ export const ServiceList = () => {
         const data = await fetchServiceFromApi("get", "");
 
         if (data) {
-          const serviceArr: ServiceInput[] = Object.values(data);
-          const parsedServices = serviceArr.slice(0, -1); // request sends some more data than necessary here
+          const serviceArr: Service[] = Object.values(data);
 
-          serviceArr === services ? noop : setServices(serviceArr);
+          serviceArr.pop(); // request sends some more data than necessary here
+          setServices(serviceArr);
         } else {
           throw new Error("Couldn't fetch services from server");
         }
@@ -36,7 +36,7 @@ export const ServiceList = () => {
     <div className="flex items-stretch grid grid-cols-2 md:grid-cols-4">
       {services.map((item, index) => (
         <div key={index}>
-          <ServiceCard {...(item as ServiceInput)} />
+          <ServiceCard {...(item as Service)} />
         </div>
       ))}
     </div>
