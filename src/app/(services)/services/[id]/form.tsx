@@ -13,8 +13,8 @@ export default function Form() {
 
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10) || 0;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10) || 0;
     setFormData((prev) => ({ ...prev, quantity: Math.max(value, 0) }));
   };
 

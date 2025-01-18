@@ -1,4 +1,5 @@
-import { ServiceInput } from "../interfaces/Service";
+import { Service, ServiceInput } from "../interfaces/Service";
+import { booleanToNumber } from "./booleanToNumber";
 
 /**
  * function to map element with type ServiceInput to Service so we
@@ -7,12 +8,12 @@ import { ServiceInput } from "../interfaces/Service";
  *@return {Service} parsedBody
  */
 
-export const mapToService = (body: ServiceInput): ServiceInput => ({
+export const mapToService = (body: ServiceInput): Service => ({
   id: body.id,
   title: body.title || "",
   description: body.description || "",
   price: body.price || 0,
-  availabilityStatus: body.availabilityStatus ?? false,
+  availabilityStatus: booleanToNumber(body.availabilityStatus),
   quantity: body.quantity || 0,
 });
 

@@ -1,22 +1,35 @@
 import { db } from "@/lib/database/db";
-import { Service } from "@/lib/interfaces/Service";
+import { Service, ServiceInput } from "@/lib/interfaces/Service";
 import { ServiceSchema as services } from "../database/schema";
 import { eq } from "drizzle-orm";
+import { numberToBoolean } from "../utils/numberToBoolean";
 
 export const getServiceById = async (
   id: bigint,
-): Promise<Service | undefined> => {
+): Promise<ServiceInput | undefined> => {
   const service = await db.query.ServiceSchema.findFirst({
     where: (services, { eq }) => eq(services.id, id),
   });
 
-  return service;
+  const parsedService = {
+    ...service,
+    id: String(service?.id),
+    availabilityStatus: numberToBoolean(service?.availabilityStatus),
+  };
+
+  return parsedService;
 };
 
-export const getServices = async (): Promise<Array<Service> | undefined> => {
+export const getServices = async (): Promise<Array<ServiceInput>> => {
   const services = await db.query.ServiceSchema.findMany();
 
-  return services;
+  const parsedServices = services.map((service) => ({
+    ...service,
+    id: service.id.toString(),
+    availabilityStatus: numberToBoolean(service.availabilityStatus),
+  }));
+
+  return parsedServices;
 };
 
 export const createService = async (service: Service) => {

@@ -2,7 +2,7 @@
 
 import TemplateImage from "@/assets/template.jpg";
 
-import { Service } from "@/lib/interfaces/Service";
+import { ServiceInput as Service } from "@/lib/interfaces/Service";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +16,7 @@ export const ServiceCard: React.FC<Service> = (service) => {
           height="168"
           width="168"
           src={TemplateImage}
-          alt={service.title}
+          alt={service.title || "another great service"}
         />
         <p className="font-thin text-sm text-center">{service.title}</p>
       </Link>

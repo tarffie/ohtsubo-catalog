@@ -1,7 +1,10 @@
 import { db } from "@/lib/database/db";
 import { Purchase } from "@/lib/interfaces/Purchase";
 import { Service, ServiceInput } from "@/lib/interfaces/Service";
-import { PurchaseSchema as purchases } from "../database/schema";
+import {
+  PurchaseSchema as purchases,
+  PurchaseServicesSchema,
+} from "../database/schema";
 
 import { eq } from "drizzle-orm/expressions";
 
@@ -29,11 +32,21 @@ export const createPurchase = async (
     userId,
     price,
     status,
-    currentDate,
-    services,
+    date: currentDate,
   };
 
   await db.insert(purchases).values(purchase);
+  
+  const purchaseId = id;
+
+  const purchaseServices = services.map((service) => ({
+    id,
+    purchaseId,
+    serviceId: BigInt(service.id),
+    quantity: service.quantity || 1,
+  }));
+
+  await db.insert(PurchaseServicesSchema).values(purchaseServices);
 };
 
 export const updatePurchase = async (purchase: Purchase) => {

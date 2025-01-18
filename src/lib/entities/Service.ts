@@ -6,5 +6,5 @@ export const ServiceSchema = z.object({
   description: z.string().optional(),
   price: z.number().nonnegative(),
   availabilityStatus: z.boolean(),
-  minimumOrderQuantity: z.number().int().nonnegative(),
+  quantity: z.number().int().nonnegative(),
 });

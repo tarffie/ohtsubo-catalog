@@ -17,7 +17,7 @@ export async function fetchServiceFromApi(
   args?: string,
   ...options: RequestInit[]
 ): Promise<any> {
-  const url = `http://172.21.0.3:3000/api/services/${args}`;
+  const url = `http://172.21.0.3:3000/api/services/${args ? args : ""}`;
 
   try {
     const response: Service = await fetch(url, {
@@ -41,5 +41,5 @@ export async function fetchServiceFromApi(
 }
 
 export const isServiceUndefined = (service: any) => {
-  return service === undefined ? true : false
-}
+  return service === undefined ? true : false;
+};

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServices, createService } from "@/lib/repository/serviceRepository";
-import { Service } from "@/lib/interfaces/Service";
+import { Service, ServiceInput } from "@/lib/interfaces/Service";
 import { ServiceSchema } from "@/lib/entities/Service";
 import { mapToService } from "@/lib/utils/map";
 
@@ -22,12 +22,11 @@ export default async function handler(
         description: serviceInput.description || "",
         price: serviceInput.price,
         availabilityStatus: serviceInput.availabilityStatus || undefined,
-        minimumOrderQuantity: serviceInput.minimumOrderQuantity,
+        quantity: serviceInput.quantity,
       });
 
-      const newService: Service = await createService(service);
-
-      res.status(201).json(newService);
+      await createService(service);
+      res.status(201).json(service);
     }
   } catch (e) {
     const error = e as Error;
