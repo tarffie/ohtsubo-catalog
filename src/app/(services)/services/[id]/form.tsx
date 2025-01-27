@@ -6,6 +6,7 @@ import { ServiceInput as Service } from "@/lib/interfaces/Service";
 
 import CardSession from "./cardSession";
 import { useServiceContext } from "@/lib/providers/ServiceProvider";
+import { notFound } from "next/navigation";
 
 export default function Form() {
   const { currentService, shoppingCart, setShoppingCart } = useServiceContext();
@@ -78,10 +79,10 @@ export default function Form() {
             -
           </a>
           <input
-            type="number"
+            type="tel"
             id="quantity"
             name="quantity"
-            className="text-black placeholder:text-black w-5 text-center mx-2 my-2"
+            className="text-black placeholder:text-black w-5 text-center mx-2 my-2 "
             placeholder="1"
             value={formData.quantity}
             onChange={handleChange}
@@ -92,7 +93,7 @@ export default function Form() {
         </div>
         <div>
           <button
-            className="font-bold text-center mt-4 border-solid border-indigo-500 rounded px-2 py-2 bg-indigo-500"
+            className="font-bold text-center mt-4 shadow shadow-md rounded px-2 py-2 bg-sky_blue"
             type="submit"
           >
             Agendar

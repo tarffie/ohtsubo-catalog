@@ -1,14 +1,14 @@
 "use client";
 
+import Link from "next/link";
+
 import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
 import React from "react";
 import { useEffect, useState } from "react";
 
-import { ServiceInput as Service } from "@/lib/interfaces/Service";
-
 const SearchBar = () => {
   const [value, setValue] = useState("");
-  const [suggestions, setSuggestions] = useState(new Array<string>());
+  const [suggestions, setSuggestions] = useState(new Array<any>());
   const [hideSuggestions, setHideSuggestions] = useState(true);
 
   useEffect(() => {
@@ -16,9 +16,10 @@ const SearchBar = () => {
       try {
         const data = await fetchServiceFromApi("get", "");
 
-        const results: string[] = Object.values(data).map((entry: any) =>
-          String(entry.title).toLowerCase(),
-        );
+        const results = Object.values(data).map((entry: any) => [
+          [entry.id, String(entry.title).toLowerCase()],
+        ]);
+
         results.pop();
 
         if (value.trim() === "") {
@@ -26,8 +27,8 @@ const SearchBar = () => {
           return;
         }
 
-        const items = results.filter((entry: string) =>
-          entry.includes(value.toLowerCase()),
+        const items = results.filter((entry: any[]) =>
+          entry[0][1].includes(String(value).toLowerCase()),
         );
 
         setSuggestions(items);
@@ -45,7 +46,7 @@ const SearchBar = () => {
     <div className="container mx-auto relative">
       <input
         type="text"
-        className="text-black border-2 border-indigo-500 focus:outline-none"
+        className="text-black border-2 border-wine-500 focus:outline-none"
         placeholder="Pesquisar..."
         value={value}
         onChange={handleInputChange}
@@ -60,13 +61,15 @@ const SearchBar = () => {
         className={`${hideSuggestions ? "hidden" : "visible"} flex justify-center`}
       >
         <div className="w-80 max-w-full bg-white rounded-md shadow-md absolute">
-          <ul className="list-none overflow-y-auto max-h-48 divide-y divide-grey-300 z-10">
-            {suggestions.map((suggestion, index) => (
+          <ul className="list-none overflow-y-auto max-h-48 divide-y divide-sky_blue-600 z-10">
+            {suggestions.map((suggestion, index, arr) => (
               <li
                 key={index}
-                className="px-4 py-2 border-l-4 text-black border-indigo-500 hover:bg-indigo-100 hover:text-gray-500 cursor-pointer"
+                className="px-4 py-2 border-l-4 text-black border-sky_blue-500 hover:bg-sky_blue-400 hover:text-pale_dogwood-700 cursor-pointer"
               >
-                {suggestion}
+                <Link href={`/services/${suggestion[0][0]}`}>
+                  {suggestion[0][1]}
+                </Link>
               </li>
             ))}
           </ul>

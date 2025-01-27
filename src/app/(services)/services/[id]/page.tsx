@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 
-import thumbnail from "@/assets/template.jpg";
+import thumbnail from "@/assets/servicoTemplate.jpg";
 
 import Form from "./form";
 import { useServiceContext } from "@/lib/providers/ServiceProvider";
@@ -12,8 +12,9 @@ import NotFound from "@/pages/404";
 
 export default function Page() {
   const { currentService } = useServiceContext();
+  const product = currentService;
 
-  const brand = "Ohtsubo Terapias";
+  //if (!product) return notFound();
 
   return (
     <>
@@ -25,16 +26,14 @@ export default function Page() {
         <div className="place-items-center items-center grid-rows grid grid-cols-1 md:grid-cols-2 font-bold min-h-screen">
           <div className="mt-auto ">
             <Image
-              className="rounded block -mb-10"
+              className="rounded block mt-5 -mb-5"
               src={thumbnail}
               alt="thumbnail com título e fundo"
-              width={348}
-              height={348}
             />
           </div>
           <div className="">
             {currentService ? (
-              <Form>{currentService}</Form>
+              <Form />
             ) : (
               <div>
                 <p> Loading service.. </p>

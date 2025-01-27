@@ -6,15 +6,16 @@ export default function Header() {
   return (
     <nav className="align-middle">
       <div className="mx-auto max-w-7xl">
-        <div className="min-h-10 -mb-[100] md:mb-0 flex justify-between items-center border border-indigo-500 font-bold mt-2 px-4 bg-indigo-300 rounded">
+        <div className="min-h-10 -mb-[50] md:mb-0 flex justify-between items-center border border-sky_blue-500 font-bold mt-2 px-4 bg-sky_blue rounded">
           <div className="">
             <Link href={"/"}>
               <FaArrowLeft />
             </Link>
           </div>
-
           <div className="">
-            <FaShoppingCart />
+            <Link href="/cart">
+              <FaShoppingCart />
+            </Link>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import TemplateImage from "@/assets/template.jpg";
+import TemplateImage from "@/assets/servicoTemplate.jpg";
 
 import { ServiceInput as Service } from "@/lib/interfaces/Service";
 
@@ -8,17 +8,24 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const ServiceCard: React.FC<Service> = (service) => {
+  const { id, title } = service;
+
   return (
-    <div>
-      <Link href={`/services/${service.id}`}>
-        <Image
-          className="rounded block m-auto"
-          height="168"
-          width="168"
-          src={TemplateImage}
-          alt={service.title || "another great service"}
-        />
-        <p className="font-thin text-sm text-center">{service.title}</p>
+    <div className="m-2">
+      <Link href={`/services/${id}`}>
+        <div>
+          <Image
+            className="rounded block m-auto mb-1"
+            height="168"
+            width="168"
+            src={TemplateImage}
+            alt={title || "another great service"}
+          />
+
+          <p className="font-thin text-sm text-center">
+            {title?.toUpperCase()}
+          </p>
+        </div>
       </Link>
     </div>
   );
