@@ -4,13 +4,11 @@ import Image from "next/image";
 import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
 
 import { Metadata } from "next";
-//import Image from "next/image";
 import { notFound } from "next/navigation";
-//import { Suspense } from "react";
 
 import thumbnail from "@/assets/servicoTemplate.jpg";
 import CardSession from "./cardSession";
-import { ServiceInput } from "@/lib/interfaces/Service";
+import AddToCart from "@/app/components/addToCart";
 
 export const generateMetadata = async (props: {
   params: Promise<{ slug: string }>;
@@ -28,25 +26,25 @@ export const generateMetadata = async (props: {
 const ShowProductSingle = async (props: {
   params: Promise<{ slug: string }>;
 }) => {
-  const params = await props.params;
-  const product = await fetchServiceFromApi("get", `${params.slug}`);
+  const { slug } = await props.params;
+  const product = await fetchServiceFromApi("get", `${slug}`);
 
-  if (!product) return notFound;
-  const { id, title, description, price } = product;
+  if (!product) return notFound();
   return (
     <div className="mt-20">
-      <p>{id}</p>
-      <p>{title}</p>
-      <p>{description}</p>
-      <p>{price}</p>
+      <Image src={thumbnail} alt="product name and description" />
+      <CardSession product={product} />
+      <AddToCart />
+      {/*Input*/}
     </div>
   );
 };
 
 const ProductPage = ({ params }: { params: { slug: string } }) => {
+  const result = (async () => Promise.resolve(params))();
   return (
     <Suspense>
-      <ShowProductSingle params={params} />
+      <ShowProductSingle params={result} />
     </Suspense>
   );
 };

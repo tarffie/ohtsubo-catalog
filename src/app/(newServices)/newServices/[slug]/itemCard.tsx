@@ -10,12 +10,24 @@ interface Props {
 export default function ItemCard({
   size,
   weight,
-  color = "prussian_blue-500",
+  color = "text-prussian_blue-500",
   content,
 }: Props) {
+  const sizeClass = {
+    lg: "text-lg",
+    "2xl": "text-2xl",
+    "1xl": "text-xl",
+    regular: "text-regular",
+  }[size];
+
+  const weightClass = {
+    bold: "font-bold",
+    regular: "font-normal",
+  }[weight];
+
   return (
-    <div className={`font-${weight} text-left mb-2`}>
-      <p className={`text-${size} text-${color}`}>{content}</p>
+    <div className={`${weightClass} text-left mb-2`}>
+      <p className={`${sizeClass} ${color}`}>{content}</p>
     </div>
   );
 }
