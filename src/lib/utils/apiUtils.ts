@@ -1,5 +1,4 @@
-import { ServiceInput, Service } from "@/lib/interfaces/Service";
-import { numberToBoolean } from "@/lib/utils/numberToBoolean";
+import { Service } from "@/lib/interfaces/Service";
 
 /**
  * a function that gets a method, desired arguments and possibly a request body
@@ -25,13 +24,7 @@ export async function fetchServiceFromApi(
       ...options,
     }).then((res) => res.json());
 
-    // we always store ids with BigInt when working with typescript
-    const parsed: ServiceInput = {
-      ...response,
-      availabilityStatus: numberToBoolean(response.availabilityStatus),
-    };
-
-    return parsed;
+    return response;
   } catch (e) {
     // typescript doesn't let me use {e} because e has type {any}
     const error = e as Error;

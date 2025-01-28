@@ -8,11 +8,11 @@ import React, {
 
 import { notFound, useParams } from "next/navigation";
 import { fetchServiceFromApi } from "../utils/apiUtils";
-import { ServiceInput } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/interfaces/Service";
 
 interface ServiceContextType {
-  currentService: ServiceInput | undefined;
-  shoppingCart: Array<ServiceInput> | [];
+  currentService: Service | undefined;
+  shoppingCart: Array<Service> | [];
   setShoppingCart: Function;
 }
 
@@ -29,7 +29,7 @@ const ServiceContext = createContext<ServiceContextType>({
 });
 
 export function ServiceProvider({ children }: ChildrenProps) {
-  const [currentService, setCurrentService] = useState<ServiceInput>();
+  const [currentService, setCurrentService] = useState<Service>();
   const [shoppingCart, setShoppingCart] = useState([]);
 
   const searchParams = useParams();

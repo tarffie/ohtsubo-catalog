@@ -1,12 +1,11 @@
 import { db } from "@/lib/database/db";
-import { Service, ServiceInput } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/interfaces/Service";
 import { ServiceSchema as services } from "../database/schema";
 import { eq } from "drizzle-orm";
-import { numberToBoolean } from "../utils/numberToBoolean";
 
 export const getServiceById = async (
   id: bigint,
-): Promise<ServiceInput | undefined> => {
+): Promise<Service | undefined> => {
   const service = await db.query.ServiceSchema.findFirst({
     where: (services, { eq }) => eq(services.id, id),
   });
@@ -14,19 +13,17 @@ export const getServiceById = async (
   const parsedService = {
     ...service,
     id: String(service?.id),
-    availabilityStatus: numberToBoolean(service?.availabilityStatus),
   };
 
   return parsedService;
 };
 
-export const getServices = async (): Promise<Array<ServiceInput>> => {
+export const getServices = async (): Promise<Array<Service>> => {
   const services = await db.query.ServiceSchema.findMany();
 
   const parsedServices = services.map((service) => ({
     ...service,
     id: service.id.toString(),
-    availabilityStatus: numberToBoolean(service.availabilityStatus),
   }));
 
   return parsedServices;
@@ -44,8 +41,6 @@ export const updateService = async (service: Service) => {
       title: service.title,
       description: service.description,
       price: service.price,
-      availabilityStatus: service.availabilityStatus,
-      minimumOrderQuantity: service.quantity,
     })
     .where(eq(services, service.id));
 };

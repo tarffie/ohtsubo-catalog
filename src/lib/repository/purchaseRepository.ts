@@ -1,6 +1,6 @@
 import { db } from "@/lib/database/db";
 import { Purchase } from "@/lib/interfaces/Purchase";
-import { Service, ServiceInput } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/interfaces/Service";
 import {
   PurchaseSchema as purchases,
   PurchaseServicesSchema,
@@ -21,7 +21,7 @@ export const getPurchases = async (): Promise<Array<Purchase> | undefined> => {
 export const createPurchase = async (
   price: number,
   status: number,
-  services: Service[] | ServiceInput[],
+  services: Service[],
   userId: bigint,
 ) => {
   const currentDate = new Date();
@@ -36,14 +36,13 @@ export const createPurchase = async (
   };
 
   await db.insert(purchases).values(purchase);
-  
+
   const purchaseId = id;
 
   const purchaseServices = services.map((service) => ({
     id,
     purchaseId,
     serviceId: BigInt(service.id),
-    quantity: service.quantity || 1,
   }));
 
   await db.insert(PurchaseServicesSchema).values(purchaseServices);

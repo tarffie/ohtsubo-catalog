@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ServiceInput as Service } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/interfaces/Service";
 import ItemCard from "./itemCard";
 
 interface Props {

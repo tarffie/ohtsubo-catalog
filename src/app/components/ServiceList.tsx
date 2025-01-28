@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 import { ServiceCard } from "@/app/components/ServiceCard";
-import { ServiceInput as Service } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/interfaces/Service";
 import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
 
 const noop = () => {};

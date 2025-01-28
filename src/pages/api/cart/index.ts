@@ -16,8 +16,6 @@ export default async function handler(
         title: body.title,
         description: body.description,
         price: body.price,
-        availabilityStatus: body.availabilityStatus,
-        quantity: body.quantity,
       };
 
       const services = new Array(service);

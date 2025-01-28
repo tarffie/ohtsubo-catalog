@@ -5,7 +5,6 @@ import {
   integer,
   bigint,
   timestamp,
-  serial,
   varchar,
 } from "drizzle-orm/pg-core";
 
@@ -14,8 +13,6 @@ export const ServiceSchema = pgTable("services", {
   title: text("title").default("").notNull(),
   description: text("description").default("").notNull(),
   price: real("price").default(0.0).notNull(),
-  availabilityStatus: integer("status").default(0).notNull(),
-  minimumOrderQuantity: integer("quantity").default(1).notNull(),
 });
 
 export const PurchaseSchema = pgTable("purchases", {
