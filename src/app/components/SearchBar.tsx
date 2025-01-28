@@ -60,9 +60,9 @@ const SearchBar = () => {
       <div
         className={`${hideSuggestions ? "hidden" : "visible"} flex justify-center`}
       >
-        <div className="w-80 max-w-full bg-white rounded-md shadow-md absolute">
+        <div className="w-80 max-w-full bg-white rounded-md shadow-md absolute z-50">
           <ul className="list-none overflow-y-auto max-h-48 divide-y divide-sky_blue-600 z-10">
-            {suggestions.map((suggestion, index, arr) => (
+            {suggestions.map((suggestion, index) => (
               <li
                 key={index}
                 className="px-4 py-2 border-l-4 text-black border-sky_blue-500 hover:bg-sky_blue-400 hover:text-pale_dogwood-700 cursor-pointer"

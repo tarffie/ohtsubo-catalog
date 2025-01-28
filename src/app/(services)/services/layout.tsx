@@ -1,12 +1,8 @@
-"use client";
-
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/app/globals.css";
 
 import Header from "./header";
-
-import { ServiceProvider as Providers } from "@/lib/providers/ServiceProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +14,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function ServiceLayout({
+export default function NewServiceLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -29,10 +25,8 @@ export default function ServiceLayout({
         className={`${geistSans.variable} ${geistMono.variable} product-layout antialised`}
       >
         <div>
-          <Providers>
-            <Header />
-            {children}
-          </Providers>
+          <Header />
+          {children}
         </div>
       </body>
     </html>
