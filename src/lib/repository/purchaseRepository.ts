@@ -1,10 +1,12 @@
 import { db } from "@/lib/database/db";
+import { getRowCount } from "@/lib/utils/dbUtils";
 import { Purchase } from "@/lib/interfaces/Purchase";
 import { Service } from "@/lib/interfaces/Service";
 import {
   PurchaseSchema as purchases,
-  PurchaseServicesSchema,
+  PurchaseItemsSchema,
 } from "../database/schema";
+
 
 import { eq } from "drizzle-orm/expressions";
 
@@ -25,7 +27,7 @@ export const createPurchase = async (
   userId: bigint,
 ) => {
   const currentDate = new Date();
-  const id = BigInt(await getPurchaseRowCount());
+  const id = BigInt(await getRowCount(purchases));
 
   let purchase = {
     id,
@@ -45,7 +47,7 @@ export const createPurchase = async (
     serviceId: BigInt(service.id),
   }));
 
-  await db.insert(PurchaseServicesSchema).values(purchaseServices);
+  await db.insert(PurchaseItemsSchema).values(purchaseServices);
 };
 
 export const updatePurchase = async (purchase: Purchase) => {

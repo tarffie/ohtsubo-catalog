@@ -35,13 +35,13 @@ const ShowProductSingle = async (props: {
       <Image src={thumbnail} alt="product name and description" />
       <CardSession product={product} />
       <AddToCart />
-      {/*Input*/}
     </div>
   );
 };
 
 const ProductPage = ({ params }: { params: { slug: string } }) => {
   const result = (async () => Promise.resolve(params))();
+
   return (
     <Suspense>
       <ShowProductSingle params={result} />

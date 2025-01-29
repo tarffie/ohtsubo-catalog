@@ -1,4 +1,4 @@
-import { Status } from "../enums/Status";
+import Status from "../enums/status";
 import { Service } from "@/lib/interfaces/Service";
 
 export interface Purchase {

@@ -22,7 +22,8 @@ export const PurchaseSchema = pgTable("purchases", {
     .references(() => UserSchema.id),
   price: real("price").default(0.0).notNull(),
   status: integer("status").default(0).notNull(),
-  date: timestamp("date").notNull().defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const UserSchema = pgTable("users", {
@@ -30,9 +31,20 @@ export const UserSchema = pgTable("users", {
   username: varchar("username").notNull().unique(),
   email: varchar("email", { length: 255 }).notNull(),
   password: varchar("password", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const PurchaseServicesSchema = pgTable("purchase_services", {
+export const CartSchema = pgTable("cart", {
+  id: bigint("id", { mode: "bigint" }).primaryKey().unique().notNull(),
+  userId: bigint("user_id", { mode: "bigint" })
+    .notNull()
+    .references(() => UserSchema.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const PurchaseItemsSchema = pgTable("purchase_items", {
   id: bigint("id", { mode: "bigint" }).primaryKey().unique().notNull(),
   purchaseId: bigint("purchase_id", { mode: "bigint" })
     .notNull()
@@ -41,4 +53,18 @@ export const PurchaseServicesSchema = pgTable("purchase_services", {
     .notNull()
     .references(() => ServiceSchema.id), // Foreign key to services
   quantity: integer("quantity").default(1).notNull(), // Optional: track how many of each service were purchased
+});
+
+export const CartItemsSchema = pgTable("cart_items", {
+  id: bigint("id", { mode: "bigint" }).primaryKey().unique().notNull(),
+  cartId: bigint("cart_id", { mode: "bigint" })
+    .notNull()
+    .references(() => CartSchema.id),
+  serviceId: bigint("service_id", { mode: "bigint" })
+    .notNull()
+    .references(() => ServiceSchema.id), // Foreign key to services
+  quantity: integer("quantity").default(1).notNull(), // Optional: track how many of each service were purchased
+  priceAtTime: real("price_at_time"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

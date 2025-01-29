@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/sh
 rm -rf migrations &&
 	npx drizzle-kit generate &&
 	npx drizzle-kit migrate &&
