@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 import { ServiceCard } from "@/app/components/ServiceCard";
 import { Service } from "@/lib/interfaces/Service";
-import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
+import { fetchAllServicesFromApi } from "@/lib/utils/apiUtils";
 
 const noop = () => {};
 
@@ -14,18 +14,15 @@ export const ServiceList = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchServiceFromApi("get", "");
+        const data = await fetchAllServicesFromApi();
 
         if (data) {
           const serviceArr: Service[] = Object.values(data);
-
-          serviceArr.pop(); // request sends some more data than necessary here
           setServices(serviceArr);
         } else {
           throw new Error("Couldn't fetch services from server");
         }
 
-        return;
       } catch (e) {
         console.error(`Error retrieving products: ${e}`);
       }

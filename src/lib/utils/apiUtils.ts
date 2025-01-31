@@ -1,38 +1,72 @@
-import { Service } from "@/lib/interfaces/Service";
-
 /**
- * a function that gets a method, desired arguments and possibly a request body
- * and returns a {Service} json from api
- * since it runs inside docker and the other components, it can fetch data from localhost
- * might have to implement a exaustive targeting later
+ * a function that gets a slug and returns a {Service} json from api
  *
- * @param {string} method
+ * @param {string} slug
  * @return {Service | undefined} json
  * @throws {Error} error
  */
-
-export async function fetchServiceFromApi(
-  method: string = "GET",
-  args?: string,
-  ...options: RequestInit[]
-): Promise<any> {
-  const url = `http://172.21.0.3:3000/api/services/${args ? args : ""}`;
+export async function fetchServiceFromApi(slug?: string): Promise<any> {
+  const url = `http://172.21.0.3:3000/api/services/${slug}`;
 
   try {
-    const response: Service = await fetch(url, {
-      method: method.toUpperCase(),
-      ...options,
-    }).then((res) => res.json());
+    const response = await fetch(url, {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
 
-    return response;
+    if (!response.ok) {
+      throw new Error(`HTTP ERROR! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.service;
   } catch (e) {
     // typescript doesn't let me use {e} because e has type {any}
     const error = e as Error;
-    console.error(`failed with error: ${error.name}`);
+    console.error(`failed with error: ${error.message}`);
     throw new Error(error.message);
   }
 }
 
-export const isServiceUndefined = (service: any) => {
-  return service === undefined ? true : false;
-};
+/**
+ * a function that returns a {Promise<Array<any>>} json with all services
+ * from our api
+ *
+ * @returns {Promise<Array<any>>} data
+ * @throws {Error} error
+ */
+
+export async function fetchAllServicesFromApi(): Promise<Array<any>> {
+  const url = `http://172.21.0.3:3000/api/services/`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      cache: "force-cache",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ERROR! status: ${response.status}`);
+    }
+
+    const data = (await response.json()).body;
+    return data;
+  } catch (e) {
+    const error = e as Error;
+    throw new Error(`HTTP ERROR! status: ${error.message}`);
+  }
+}
+
+export async function postToCartFromApi() {
+  throw new Error("TODO");
+  const url = `http://172.21.0.3:3000/api/cart/`;
+
+  try {
+  } catch (e) {}
+}

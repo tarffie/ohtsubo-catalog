@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
+import { fetchAllServicesFromApi } from "@/lib/utils/apiUtils";
 import React from "react";
 import { useEffect, useState } from "react";
 
@@ -14,7 +14,7 @@ const SearchBar = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchServiceFromApi("get", "");
+        const data = await fetchAllServicesFromApi();
 
         const results = Object.values(data).map((entry: any) => [
           [entry.id, String(entry.title).toLowerCase()],

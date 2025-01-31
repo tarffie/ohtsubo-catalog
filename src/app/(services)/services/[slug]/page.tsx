@@ -13,30 +13,40 @@ import AddToCart from "@/app/components/addToCart";
 export const generateMetadata = async (props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> => {
-  const { slug } = await props.params;
-  const product = await fetchServiceFromApi("get", `${slug}`);
+  try {
+    const { slug } = await props.params;
+    const product = await fetchServiceFromApi(slug);
 
-  if (!product) return notFound();
-  return {
-    title: product.title,
-    description: product.description,
-  };
+    return {
+      title: product.title,
+      description: product.description,
+    };
+  } catch (e) {
+    return {
+      title: "product not found",
+      description: "The requested product could not be found",
+    };
+  }
 };
 
 const ShowProductSingle = async (props: {
   params: Promise<{ slug: string }>;
 }) => {
-  const { slug } = await props.params;
-  const product = await fetchServiceFromApi("get", `${slug}`);
+  try {
+    const { slug } = await props.params;
+    const product = await fetchServiceFromApi(slug);
 
-  if (!product) return notFound();
-  return (
-    <div className="mt-20">
-      <Image src={thumbnail} alt="product name and description" />
-      <CardSession product={product} />
-      <AddToCart />
-    </div>
-  );
+    if (!product) return notFound();
+    return (
+      <div className="mt-20">
+        <Image src={thumbnail} alt="product name and description" />
+        <CardSession product={product} />
+        <AddToCart />
+      </div>
+    );
+  } catch (e) {
+    return notFound();
+  }
 };
 
 const ProductPage = ({ params }: { params: { slug: string } }) => {

@@ -23,12 +23,16 @@ export const getCartByUserId = async (id: bigint): Promise<Cart> => {
   });
 
   if (!(cart !== undefined)) {
+    const cartId = BigInt(await getRowCount(CartSchema));
+
     cart = {
-      id: BigInt(await getRowCount(CartSchema)),
+      id: cartId,
       userId: BigInt(-1),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+
+    createCart(cartId, cart);
   }
   // return all mighty cart!
   return cart;
@@ -39,11 +43,12 @@ export const createCart = async (id: bigint, payload: Cart) => {
 
   const { userId, createdAt } = payload;
 
-  if (cart?.userId === BigInt(-1)) {
+  if (cart === undefined) {
     cart = {
-      ...cart,
       id: id,
-      userId: userId,
+      userId: userId || BigInt(-1),
+      createdAt: createdAt,
+      updatedAt: createdAt,
     };
   } else {
     throw new Error("Cart already exists");

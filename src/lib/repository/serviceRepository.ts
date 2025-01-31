@@ -10,12 +10,16 @@ export const getServiceById = async (
     where: (services, { eq }) => eq(services.id, id),
   });
 
-  const parsedService = {
-    ...service,
-    id: String(service?.id),
-  };
+  if (service !== undefined) {
+    const parsedService = {
+      ...service,
+      id: String(service?.id),
+    };
 
-  return parsedService;
+    return parsedService;
+  }
+
+  throw new Error("coudn't find service");
 };
 
 export const getServices = async (): Promise<Array<Service>> => {

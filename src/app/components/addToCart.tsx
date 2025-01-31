@@ -33,7 +33,8 @@ export default function AddToCart() {
     event.preventDefault();
 
     const { quantity } = formData;
-
+    console.error("TODO, User-related features are yet to be implemented")
+    return 
     //const shoppingJson = JSON.stringify(shoppingCart);
 
     try {
