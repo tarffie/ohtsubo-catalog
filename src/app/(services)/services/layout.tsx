@@ -2,17 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/app/globals.css";
 
-import Header from "./header";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import AltHeader from "@/app/components/altHeader";
 
 export default function NewServiceLayout({
   children,
@@ -20,15 +10,9 @@ export default function NewServiceLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} product-layout antialised`}
-      >
-        <div>
-          <Header />
-          {children}
-        </div>
-      </body>
-    </html>
+    <div>
+      <AltHeader />
+      {children}
+    </div>
   );
 }

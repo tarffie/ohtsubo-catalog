@@ -24,7 +24,7 @@ export default function Header() {
             </div>
 
             {/* the freaking search bar.. */}
-            <div className="mt-5 grid-cols-1">
+            <div className="mt-5 grid-cols-1 pl-2 -mr-[69]">
               <SearchBar />
             </div>
           </div>

@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.3",
-    "next": "15.1.0",
+    "jose": "^5.9.6",
+    "next": "^15.1.6",
+    "next-auth": "^5.0.0-beta.25",
     "pg": "^8.13.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

@@ -1,6 +1,7 @@
 import HomeButtonRow from "@/app/components/HomeButtonRow";
 import Hero from "@/app/components/Hero";
 import { ServiceList } from "@/app/components/ServiceList";
+import Header from "@/app/components/Header";
 
 export default function Home() {
   /**
@@ -9,6 +10,7 @@ export default function Home() {
    */
   return (
     <div>
+      <Header />
       <Hero />
       <HomeButtonRow />
       <ServiceList />

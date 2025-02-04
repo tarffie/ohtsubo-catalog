@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+import { cookies } from "next/headers";
+
 import { createPurchase } from "@/lib/repository/purchaseRepository";
 import Status from "@/lib/enums/status";
-import { getCartById } from "@/lib/repository/cartRepository";
+import { getCartById, getCartByUserId } from "@/lib/repository/cartRepository";
 
 export default async function handler(
   req: NextApiRequest,
@@ -59,10 +61,25 @@ async function POST(req: NextApiRequest, res: NextApiResponse) {
 
 async function GET(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.cookies;
+  let cart;
 
-  const cart = await getCartByUserId(id);
+  if (id !== undefined) {
+    cart = await getCartByUserId(BigInt(String(id)));
+    const parsedCart = {
+      ...cart,
+      id: String(cart.id),
+      userId: String(cart.userId),
+    };
 
-  return res
-    .status(200)
-    .json({ success: false, cart: cart, headers: req.headers });
+    return res
+      .status(200)
+      .json({ success: true, cart: parsedCart, headers: req.headers });
+  }
+
+  const e = new Error("cart not found");
+  return res.status(404).json({
+    success: false,
+    cart: { message: e.message },
+    headers: req.headers,
+  });
 }

@@ -65,7 +65,12 @@ const SearchBar = () => {
             {suggestions.map((suggestion, index) => (
               <li
                 key={index}
-                className="px-4 py-2 border-l-4 text-black border-sky_blue-500 hover:bg-sky_blue-400 hover:text-pale_dogwood-700 cursor-pointer"
+                className="
+                px-4 py-2 border-l-4
+                text-black border-sky_blue-500
+                hover:bg-sky_blue-400
+                hover:text-pale_dogwood-700
+                cursor-pointer"
               >
                 <Link href={`/services/${suggestion[0][0]}`}>
                   {suggestion[0][1]}
