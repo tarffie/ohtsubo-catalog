@@ -43,9 +43,9 @@ type SessionPayload = {
 
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)
-    .setProtectedHeader({ alg: "bcrypt" })
+    .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("1y")
+    .setExpirationTime("365d")
     .sign(encodedKey);
 }
 
