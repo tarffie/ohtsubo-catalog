@@ -1,34 +1,34 @@
 "use client";
 
 import Link from "next/link";
-
 import { fetchAllServicesFromApi } from "@/lib/utils/apiUtils";
 import React from "react";
 import { useEffect, useState } from "react";
+import { Service } from "@/lib/interfaces/Service";
+
+type Suggestion = [string[]];
 
 const SearchBar = () => {
   const [value, setValue] = useState("");
-  const [suggestions, setSuggestions] = useState(new Array<any>());
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [hideSuggestions, setHideSuggestions] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
         const data = await fetchAllServicesFromApi();
-
-        const results = Object.values(data).map((entry: any) => [
-          [entry.id, String(entry.title).toLowerCase()],
-        ]);
-
-        results.pop();
+        const results: Suggestion[] = data.map(
+          (entry: Service) =>
+            [[String(entry?.id), String(entry?.title).toLowerCase()]] as const,
+        );
 
         if (value.trim() === "") {
           setSuggestions([]);
           return;
         }
 
-        const items = results.filter((entry: any[]) =>
-          entry[0][1].includes(String(value).toLowerCase()),
+        const items = results.filter((entry) =>
+          String(entry[0][1]).includes(String(value).toLowerCase()),
         );
 
         setSuggestions(items);

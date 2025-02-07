@@ -2,7 +2,7 @@
 
 import { authenticate } from "@/app/lib/auth/session";
 import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
+// import { useFormStatus } from "react-dom";
 import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
@@ -74,6 +74,6 @@ export default function LoginForm() {
   );
 }
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-}
+// function SubmitButton() {
+//   const { pending } = useFormStatus();
+// }

@@ -6,8 +6,6 @@ import { ServiceCard } from "@/app/components/ServiceCard";
 import { Service } from "@/lib/interfaces/Service";
 import { fetchAllServicesFromApi } from "@/lib/utils/apiUtils";
 
-const noop = () => {};
-
 export const ServiceList = () => {
   const [services, setServices] = useState(new Array<Service>());
 
@@ -24,7 +22,8 @@ export const ServiceList = () => {
         }
 
       } catch (e) {
-        console.error(`Error retrieving products: ${e}`);
+        const error = e as Error
+        console.error(error);
       }
     })();
   }, []);

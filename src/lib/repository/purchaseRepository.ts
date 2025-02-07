@@ -29,7 +29,7 @@ export const createPurchase = async (
   const currentDate = new Date();
   const id = BigInt(await getRowCount(purchases));
 
-  let purchase = {
+  const purchase = {
     id,
     userId,
     price,

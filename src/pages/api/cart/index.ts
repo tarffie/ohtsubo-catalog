@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { cookies } from "next/headers";
+//import { cookies } from "next/headers";
 
 import { createPurchase } from "@/lib/repository/purchaseRepository";
 import Status from "@/lib/enums/status";
-import { getCartById, getCartByUserId } from "@/lib/repository/cartRepository";
+import { /*getCartById,*/ getCartByUserId } from "@/lib/repository/cartRepository";
 
 export default async function handler(
   req: NextApiRequest,

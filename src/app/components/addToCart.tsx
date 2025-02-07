@@ -7,7 +7,7 @@ export default function AddToCart() {
   const [formData, setFormData] = useState({ quantity: 1 });
   const router = useRouter();
 
-  const qtyIncrement = (e: any) => {
+  const qtyIncrement = (e: React.ChangeEvent) => {
     e.preventDefault();
     setFormData((prev) => ({
       ...prev,
@@ -15,7 +15,7 @@ export default function AddToCart() {
     }));
   };
 
-  const qtyDecrement = (e: any) => {
+  const qtyDecrement = (e: React.ChangeEvent) => {
     e.preventDefault();
     setFormData((prev) => ({
       ...prev,
@@ -32,9 +32,9 @@ export default function AddToCart() {
     // prevent page reload
     event.preventDefault();
 
-    const { quantity } = formData;
-    console.error("TODO, User-related features are yet to be implemented")
-    return 
+    // const { quantity } = formData;
+    console.error("TODO, User-related features are yet to be implemented");
+    return;
     //const shoppingJson = JSON.stringify(shoppingCart);
 
     try {

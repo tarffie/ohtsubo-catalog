@@ -18,10 +18,12 @@ export const generateMetadata = async (props: {
     const product = await fetchServiceFromApi(slug);
 
     return {
-      title: product.title,
-      description: product.description,
+      title: product?.title,
+      description: product?.description,
     };
   } catch (e) {
+    const error = e as Error;
+    console.error(error.message);
     return {
       title: "product not found",
       description: "The requested product could not be found",
@@ -45,6 +47,7 @@ const ShowProductSingle = async (props: {
       </div>
     );
   } catch (e) {
+    console.error(e);
     return notFound();
   }
 };

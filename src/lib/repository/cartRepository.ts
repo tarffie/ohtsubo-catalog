@@ -2,7 +2,6 @@ import { Cart } from "@/lib/interfaces/Cart";
 import { db } from "@/lib/database/db";
 import { CartSchema as carts, CartSchema } from "../database/schema";
 import { getRowCount } from "../utils/dbUtils";
-import { eq } from "drizzle-orm";
 
 export const getCarts = async () => {
   const carts = await db.query.CartSchema.findMany();

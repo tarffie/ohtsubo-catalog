@@ -2,11 +2,16 @@
  * a function that gets a slug and returns a {Service} json from api
  *
  * @param {string} slug
- * @return {Service | undefined} json
+ * @return {object | undefined} json
  * @throws {Error} error
  */
-export async function fetchServiceFromApi(slug?: string): Promise<any> {
-  const url = `http://172.21.0.3:3000/api/services/${slug}`;
+// i'd really like to implement this
+
+import { Service } from "../interfaces/Service";
+
+// as a more general function
+export async function fetchServiceFromApi(slug?: string): Promise<Service> {
+  const url = `http://172.21.0.3:3000/lib/services/${slug}`;
 
   try {
     const response = await fetch(url, {
@@ -39,8 +44,8 @@ export async function fetchServiceFromApi(slug?: string): Promise<any> {
  * @throws {Error} error
  */
 
-export async function fetchAllServicesFromApi(): Promise<Array<any>> {
-  const url = `http://172.21.0.3:3000/api/services/`;
+export async function fetchAllServicesFromApi(): Promise<Array<Service>> {
+  const url = `http://172.21.0.3:3000/lib/services/`;
 
   try {
     const response = await fetch(url, {
@@ -59,14 +64,16 @@ export async function fetchAllServicesFromApi(): Promise<Array<any>> {
     return data;
   } catch (e) {
     const error = e as Error;
-    throw new Error(`HTTP ERROR! status: ${error.message}`);
+    throw new Error(error.message);
   }
 }
 
 export async function postToCartFromApi() {
   throw new Error("TODO");
-  const url = `http://172.21.0.3:3000/api/cart/`;
+  /*
+  const url = `http://172.21.0.3:3000/lib/cart/`;
 
   try {
   } catch (e) {}
+  */
 }

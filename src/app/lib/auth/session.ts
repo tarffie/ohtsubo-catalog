@@ -3,8 +3,8 @@ import "server-only";
 import { signIn } from "@/authentication";
 import { AuthError } from "next-auth";
 
-import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
+import { SignJWT, /*jwtVerify*/ } from "jose";
+// import { cookies } from "next/headers";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -32,6 +32,7 @@ export async function authenticate(
 export async function createSession(userId: string) {
   const expiresAt = new Date(Date.now() + 365.25 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ userId, expiresAt });
+  return session;
 }
 
 export async function deleteSession() {}

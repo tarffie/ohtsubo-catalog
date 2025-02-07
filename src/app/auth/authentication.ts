@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { createSession, deleteSession } from "@/app/lib/auth/session";
+/*import { createSession, deleteSession } from "@/app/lib/auth/session";*/
 import { redirect } from "next/navigation";
 
 const loginSchema = z.object({
@@ -12,7 +12,7 @@ const loginSchema = z.object({
     .trim(),
 });
 
-export const login = async (prevState: anyp, formData: FormData) => {
+export const login = async (prevState: unknown, formData: FormData) => {
   const result = loginSchema.safeParse(Object.fromEntries(formData));
 
   if (!result.success) {

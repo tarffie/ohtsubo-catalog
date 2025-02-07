@@ -3,7 +3,7 @@ import { mapToService } from "@/lib/utils/map";
 import { Service } from "@/lib/interfaces/Service";
 import { ServiceSchema } from "@/lib/entities/Service";
 
-import { NextRequest, NextResponse } from "next/server";
+import { /*NextRequest,*/ NextResponse } from "next/server";
 
 export async function GET() {
   try {

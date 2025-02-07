@@ -4,12 +4,13 @@ import LoginForm from "../loginForm";
 export const generateMetadata = async () => {};
 
 const RegistrationPage = ({ params }: { params: { slug: string } }) => {
-  const result = (async () => Promise.resolve(params))();
+  // const result = (async () => Promise.resolve(params))();
+  console.log(params);
 
   return (
     <Suspense>
       <LoginForm />
-    </Suspense >
+    </Suspense>
   );
 };
 

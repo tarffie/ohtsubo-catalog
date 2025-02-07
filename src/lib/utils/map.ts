@@ -17,19 +17,15 @@ export const mapToService = (body: Service): Service => ({
 /**
  * function to map desired props from object so we can iterate through it for ReactJS
  *@param {Object} obj the object we wanna map
- *@param {string[]} targets the desired props we're targeting
- *@return {Array<any>} an array with the desired props
+ *@return {Array<any>} an array with the props
  */
 
-export const mapObjProps = (
-  obj: Object,
-  targets: Array<string>,
-): Record<string, any> => {
-  const newObj: Record<string, any> = {};
+export const mapObjProps = (obj: object): Record<string, unknown> => {
+  const newObj: Record<string, unknown> = {};
 
-  Object.keys(obj).forEach((key, index, arr) => {
+  Object.keys(obj).forEach((key: string, index: number, arr: unknown[]) => {
     if (arr.includes(key)) {
-      newObj[key] = (obj as Record<string, any>)[key];
+      newObj[key] = (obj as Record<string, unknown>)[key];
     }
   });
 

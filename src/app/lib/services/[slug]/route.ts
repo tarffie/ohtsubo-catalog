@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   getServiceById,
   updateService,
-  deleteService,
+  /*deleteService,*/
 } from "@/lib/repository/serviceRepository";
 import { Service } from "@/lib/interfaces/Service";
-import { cookies } from "next/headers";
+/*import { cookies } from "next/headers";*/
 
 export async function GET(
   request: NextRequest,
@@ -46,13 +46,14 @@ export async function PUT(req: NextRequest) {
   } catch (e) {
     return NextResponse.json({
       status: 500,
-      message: "there was an error updating this service",
+      message: `there was an error updating this service, ${e.message}`,
     });
   }
 }
 
 export async function DELETE() {
   throw new Error("TODO PERMISSIONS IMPLEMENTATION");
+  /*
   const cookieFactory = await cookies();
   const id = cookieFactory.get("id")?.value;
 
@@ -66,4 +67,5 @@ export async function DELETE() {
         { status: 500 },
       );
     }
+  */
 }
