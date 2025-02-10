@@ -8,6 +8,21 @@ export default {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        "main-layout": "1fr min(800px, 100%) 1fr",
+        "card-grid": "repeat(auto-fit, minmax(250px, 1fr))",
+      },
+      maxWidth: {
+        "content-max": "1200px",
+      },
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: "1rem",
+          sm: "2rem",
+          lg: "4rem",
+        },
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

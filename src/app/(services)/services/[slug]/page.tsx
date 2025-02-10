@@ -1,12 +1,10 @@
 import React, { Suspense } from "react";
-import Image from "next/image";
 
 import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
 
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import thumbnail from "@/assets/servicoTemplate.jpg";
 import CardSession from "./cardSession";
 import AddToCart from "@/app/components/addToCart";
 
@@ -40,8 +38,7 @@ const ShowProductSingle = async (props: {
 
     if (!product) return notFound();
     return (
-      <div className="mt-20">
-        <Image src={thumbnail} alt="product name and description" />
+      <div className="mt-[1em] lg:mt-[2.5em]">
         <CardSession product={product} />
         <AddToCart />
       </div>

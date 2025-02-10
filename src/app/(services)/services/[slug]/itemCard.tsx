@@ -14,15 +14,16 @@ export default function ItemCard({
   content,
 }: Props) {
   const sizeClass = {
-    lg: "text-lg",
+    "lg": "text-lg",
     "2xl": "text-2xl",
     "1xl": "text-xl",
-    regular: "text-regular",
+    "regular": "text-regular",
   }[size];
 
   const weightClass = {
-    bold: "font-bold",
-    regular: "font-normal",
+    "black": "font-black",
+    "bold": "font-bold",
+    "regular": "font-normal",
   }[weight];
 
   return (
