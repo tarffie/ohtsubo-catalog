@@ -7,17 +7,76 @@ import {
   PurchaseItemsSchema,
 } from "../database/schema";
 
-
 import { eq } from "drizzle-orm/expressions";
 
 export const getPurchaseById = async (
-  id: bigint,
+  id: string,
 ): Promise<Purchase | undefined> => {
-  return undefined;
+  const purchase = await db.query.PurchaseSchema.findFirst({
+    where: (purchases, { eq }) => eq(purchases.id, BigInt(id)),
+  });
+
+  if (!purchase) return undefined;
+
+  const services = await db.query.PurchaseItemsSchema.findMany({
+    where: (items, { eq }) => eq(items.purchaseId, purchase.id), // Use purchase.id directly
+  });
+
+  const fixedPurchase: Purchase = {
+    ...purchase,
+    createdAt: purchase.createdAt,
+    services: services,
+  };
+
+  return fixedPurchase ?? undefined;
 };
 
-export const getPurchases = async (): Promise<Array<Purchase> | undefined> => {
-  return undefined;
+export const findUserPurchases = async (
+  userId: string,
+): Promise<Array<Purchase>> => {
+  const purchases = await db.query.PurchaseSchema.findMany({
+    where: (purchases, { eq }) => eq(purchases.userId, BigInt(userId)),
+  });
+
+  const purchaseIds = purchases.map((purchase) => purchase.id);
+
+  const services = await db.query.PurchaseItemsSchema.findMany({
+    where: (items, { inArray }) => inArray(items.purchaseId, purchaseIds),
+  });
+
+  return (
+    purchases.map((purchase) => ({
+      ...purchase,
+      date: purchase.createdAt, // Add the required date field
+      services: services.filter(
+        (service) => service.purchaseId === purchase.id,
+      ),
+    })) ?? undefined
+  );
+};
+
+export const getPurchases = async (
+  userId: string,
+): Promise<Array<Purchase> | undefined> => {
+  const purchases = await db.query.PurchaseSchema.findMany({
+    where: (purchases, { eq }) => eq(purchases.userId, BigInt(userId)),
+  });
+
+  const purchaseIds = purchases.map((purchase) => purchase.id);
+
+  const services = await db.query.PurchaseItemsSchema.findMany({
+    where: (items, { inArray }) => inArray(items.purchaseId, purchaseIds),
+  });
+
+  return (
+    purchases.map((purchase) => ({
+      ...purchase,
+      date: purchase.createdAt, // Add the required date field
+      services: services.filter(
+        (service) => service.purchaseId === purchase.id,
+      ),
+    })) ?? undefined
+  );
 };
 
 export const createPurchase = async (
@@ -51,17 +110,17 @@ export const createPurchase = async (
 };
 
 export const updatePurchase = async (purchase: Purchase) => {
-  let { price, status, services, date } = purchase;
+  const { price, status, services, createdAt } = purchase;
 
-  let id = BigInt(String(purchase.id));
-  let userId = BigInt(String(purchase.userId));
+  const id = BigInt(String(purchase.id));
+  const userId = BigInt(String(purchase.userId));
 
-  let updatedPurchase = {
+  const updatedPurchase = {
     id,
     userId,
     price,
     status,
-    date,
+    createdAt,
     services,
   };
 
@@ -73,9 +132,4 @@ export const updatePurchase = async (purchase: Purchase) => {
 
 export const deletePurchase = async (id: string) => {
   db.delete(purchases).where(eq(purchases, id));
-};
-
-export const getPurchaseRowCount = async (): Promise<number> => {
-  const rows = await db.query.PurchaseSchema.findMany();
-  return Object.keys(rows).length;
 };

@@ -50,5 +50,5 @@ export const updateService = async (service: Service) => {
 };
 
 export const deleteService = async (id: string) => {
-  db.delete(services).where(eq(services, id));
+  await db.delete(services).where(eq(services, id));
 };

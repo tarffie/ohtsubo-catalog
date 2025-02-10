@@ -4,23 +4,24 @@ import { UserSchema as users } from "../database/schema";
 import { getRowCount } from "../utils/dbUtils";
 import { eq } from "drizzle-orm";
 
-export const getUser = async () => {
+export const getUsers = async (): Promise<Array<User> | undefined> => {
   const users = await db.query.UserSchema.findMany();
   return users;
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: string): Promise<User | undefined> => {
   const user = await db.query.UserSchema.findFirst({
     where: (users, { eq }) => eq(users.id, BigInt(id)),
   });
 
   return user;
 };
-export const getUserByEmail = async (email: string) => {
+export const getUserByEmail = async (email: string): Promise<User | undefined> => {
   const user = await db.query.UserSchema.findFirst({
     where: (users, { eq }) => eq(users.email, email),
   });
 
+  if (user === undefined) return undefined;
   return user;
 };
 
@@ -42,10 +43,20 @@ export const createUser = async (id: string, payload: User) => {
   }
 
   const data = Object.values(user);
-
-  // save to database user state
   await db.insert(users).values(data);
 };
 
-export const updateUser = async (id: string, payload: User) => {};
-export const deleteUser = async (id: string) => {};
+export const updateUser = async (payload: User) => {
+  await db
+    .update(users)
+    .set({
+      email: payload.email,
+      password: payload.password,
+      updatedAt: new Date(),
+    })
+    .where(eq(users, payload.id));
+};
+
+export const deleteUser = async (id: string) => {
+  await db.delete(users).where(eq(users, id));
+};
