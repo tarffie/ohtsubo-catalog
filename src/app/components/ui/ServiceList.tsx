@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 
-import { ServiceCard } from "@/app/components/ServiceCard";
+import { ServiceCard } from "@/app/components/ui/ServiceCard";
 import { Service } from "@/lib/interfaces/Service";
-import { fetchAllServicesFromApi } from "@/lib/utils/apiUtils";
+import { fetchAllFromApi } from "@/lib/utils/apiUtils";
 
 export const ServiceList = () => {
   const [services, setServices] = useState(new Array<Service>());
@@ -12,7 +12,7 @@ export const ServiceList = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchAllServicesFromApi();
+        const data = await fetchAllFromApi("services");
 
         if (data) {
           const serviceArr: Service[] = Object.values(data);
@@ -20,9 +20,8 @@ export const ServiceList = () => {
         } else {
           throw new Error("Couldn't fetch services from server");
         }
-
       } catch (e) {
-        const error = e as Error
+        const error = e as Error;
         console.error(error);
       }
     })();

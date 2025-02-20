@@ -16,7 +16,7 @@ const assemblePostgresConnectionString = () => {
   return `postgresql://${user}:${password}@${url}:${port}/${database}`;
 };
 
-const pool = new pg.Pool({
+export const pool = new pg.Pool({
   connectionString: assemblePostgresConnectionString(),
 });
 

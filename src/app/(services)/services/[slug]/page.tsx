@@ -1,19 +1,19 @@
 import React, { Suspense } from "react";
 
-import { fetchServiceFromApi } from "@/lib/utils/apiUtils";
+import { fetchFromApi } from "@/lib/utils/apiUtils";
 
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import CardSession from "./cardSession";
-import AddToCart from "@/app/components/addToCart";
+import AddToCart from "@/app/components/ui/addToCart";
 
 export const generateMetadata = async (props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> => {
   try {
     const { slug } = await props.params;
-    const product = await fetchServiceFromApi(slug);
+    const product = await fetchFromApi("services", slug);
 
     return {
       title: product?.title,
@@ -34,7 +34,7 @@ const ShowProductSingle = async (props: {
 }) => {
   try {
     const { slug } = await props.params;
-    const product = await fetchServiceFromApi(slug);
+    const product = await fetchFromApi("services", slug);
 
     if (!product) return notFound();
     return (

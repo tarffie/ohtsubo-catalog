@@ -1,6 +1,6 @@
 import "@/app/globals.css";
 
-import AltHeader from "@/app/components/altHeader";
+import AltHeader from "@/app/components/ui/altHeader";
 
 export default function NewServiceLayout({
   children,

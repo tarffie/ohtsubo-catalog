@@ -1,12 +1,11 @@
 import "server-only";
 
-import { signIn } from "@/authentication";
+import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 
-import { SignJWT, /*jwtVerify*/ } from "jose";
-// import { cookies } from "next/headers";
+import { SignJWT } from "jose";
 
-const secretKey = process.env.SESSION_SECRET;
+const secretKey = process.env.AUTH_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export async function authenticate(

@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import SearchBar from "@/app/components/SearchBar";
+import SearchBar from "@/app/components/ui/SearchBar";
 
 import logo from "@/assets/logo.svg";
 

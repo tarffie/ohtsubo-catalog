@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { fetchAllServicesFromApi } from "@/lib/utils/apiUtils";
+import { fetchAllFromApi } from "@/lib/utils/apiUtils";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Service } from "@/lib/interfaces/Service";
@@ -16,7 +16,7 @@ const SearchBar = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchAllServicesFromApi();
+        const data = await fetchAllFromApi("services");
         const results: Suggestion[] = data.map(
           (entry: Service) =>
             [[String(entry?.id), String(entry?.title).toLowerCase()]] as const,

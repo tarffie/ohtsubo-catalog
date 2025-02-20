@@ -1,3 +1,7 @@
+import { Service } from "../interfaces/Service";
+const API_URL = `http://172.21.0.2`;
+const API_PORT = `3000`;
+
 /**
  * a function that gets a slug and returns a {Service} json from api
  *
@@ -7,11 +11,11 @@
  */
 // i'd really like to implement this
 
-import { Service } from "../interfaces/Service";
-
-// as a more general function
-export async function fetchServiceFromApi(slug?: string): Promise<Service> {
-  const url = `http://172.21.0.3:3000/lib/services/${slug}`;
+export async function fetchFromApi(
+  param: string,
+  slug?: string,
+): Promise<Service> {
+  const url = `${API_URL}:${API_PORT}/api/${param}/${slug}`;
 
   try {
     const response = await fetch(url, {
@@ -29,9 +33,7 @@ export async function fetchServiceFromApi(slug?: string): Promise<Service> {
     const data = await response.json();
     return data.service;
   } catch (e) {
-    // typescript doesn't let me use {e} because e has type {any}
     const error = e as Error;
-    console.error(`failed with error: ${error.message}`);
     throw new Error(error.message);
   }
 }
@@ -44,8 +46,8 @@ export async function fetchServiceFromApi(slug?: string): Promise<Service> {
  * @throws {Error} error
  */
 
-export async function fetchAllServicesFromApi(): Promise<Array<Service>> {
-  const url = `http://172.21.0.3:3000/lib/services/`;
+export async function fetchAllFromApi(param: string): Promise<Array<Service>> {
+  const url = `${API_URL}:${API_PORT}/api/${param}/`;
 
   try {
     const response = await fetch(url, {
@@ -68,10 +70,34 @@ export async function fetchAllServicesFromApi(): Promise<Array<Service>> {
   }
 }
 
+/**
+ * sends a request to authenticate a user and returns a status and token
+ * @param {string} email - The email from the user who'd like to be authenticated
+ * @param {string} password - The password from the user who'd like to be authenticated
+ * @returns Promise<T> returns a response with a token or undefined if error
+ * @throws {Error} Error is thrown whenever try fails
+ */
+export async function authRequest(email: string, password: string) {
+  try {
+    const request = await fetch("http://172.21.0.3${API_PORT}/api/login", {
+      body: JSON.stringify({ email: email, password: password }),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return request.status;
+  } catch (e) {
+    const error = e as Error;
+    throw new Error(error.message);
+  }
+}
+
 export async function postToCartFromApi() {
   throw new Error("TODO");
   /*
-  const url = `http://172.21.0.3:3000/lib/cart/`;
+  const url = `http://172.21.0.3${API_PORT}/api/cart/`;
 
   try {
   } catch (e) {}

@@ -1,7 +1,7 @@
-import HomeButtonRow from "@/app/components/HomeButtonRow";
-import Hero from "@/app/components/Hero";
-import { ServiceList } from "@/app/components/ServiceList";
-import Header from "@/app/components/Header";
+import HomeButtonRow from "@/app/components/ui/HomeButtonRow";
+import Hero from "@/app/components/ui/Hero";
+import { ServiceList } from "@/app/components/ui/ServiceList";
+import Header from "@/app/components/ui/Header";
 
 export default function Home() {
   /**
