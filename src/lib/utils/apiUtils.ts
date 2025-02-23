@@ -1,6 +1,7 @@
 import { Service } from "../interfaces/Service";
-const API_URL = `http://172.21.0.2`;
-const API_PORT = `3000`;
+
+const API_URL = process.env.APP_URL;
+const API_PORT = process.env.NODE_LOCAL_PORT;
 
 /**
  * a function that gets a slug and returns a {Service} json from api
@@ -77,9 +78,12 @@ export async function fetchAllFromApi(param: string): Promise<Array<Service>> {
  * @returns Promise<T> returns a response with a token or undefined if error
  * @throws {Error} Error is thrown whenever try fails
  */
-export async function authRequest(email: string, password: string) {
+export async function authRequest(
+  email: string,
+  password: string,
+): Promise<number | undefined> {
   try {
-    const request = await fetch("http://172.21.0.3${API_PORT}/api/login", {
+    const request = await fetch(`${API_URL}:${API_PORT}/api/login`, {
       body: JSON.stringify({ email: email, password: password }),
       method: "POST",
       headers: {
@@ -97,7 +101,7 @@ export async function authRequest(email: string, password: string) {
 export async function postToCartFromApi() {
   throw new Error("TODO");
   /*
-  const url = `http://172.21.0.3${API_PORT}/api/cart/`;
+  const url = `${API_URL}:${API_PORT}/api/cart/`;
 
   try {
   } catch (e) {}
