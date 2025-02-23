@@ -1,6 +1,7 @@
 import { Service } from "../interfaces/Service";
-const API_URL = `http://172.21.0.2`;
-const API_PORT = `3000`;
+
+const API_URL = process.env.APP_URL;
+const API_PORT = process.env.NODE_LOCAL_PORT;
 
 /**
  * a function that gets a slug and returns a {Service} json from api
