@@ -1,4 +1,5 @@
-// Drizzle & neondatabase for database connection with postgres
+import type { InferSelectModel } from "drizzle-orm";
+
 import pg from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 // our config files

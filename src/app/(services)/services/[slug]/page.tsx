@@ -13,7 +13,8 @@ export const generateMetadata = async (props: {
 }): Promise<Metadata> => {
   try {
     const { slug } = await props.params;
-    const product = await fetchFromApi("services", slug);
+
+    const product = (await fetchFromApi("services", slug))["service"];
 
     return {
       title: product?.title,
@@ -34,7 +35,7 @@ const ShowProductSingle = async (props: {
 }) => {
   try {
     const { slug } = await props.params;
-    const product = await fetchFromApi("services", slug);
+    const product = (await fetchFromApi("services", slug))["service"];
 
     if (!product) return notFound();
     return (
@@ -44,7 +45,8 @@ const ShowProductSingle = async (props: {
       </div>
     );
   } catch (e) {
-    console.error(e);
+    const error = e as Error;
+    console.error(error.message);
     return notFound();
   }
 };

@@ -7,19 +7,20 @@ import heroBg from "@/assets/heroBg.jpeg";
 
 function Hero() {
   return (
-    <div className="relative w-full h-auto">
+    <div className="w-full relative flex items-center justify-center h-28 overflow-hidden">
       {/* Background Image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         <Image
           src={heroBg}
           alt="picture from sky with a ton of stars"
-          layout="fill" // Ensures the image covers the entire container
-          objectFit="cover" // Ensures the image maintains its aspect ratio
+          layout="fill"
+          objectFit="cover"
+          priority
         />
       </div>
 
-      {/* Logo */}
-      <div className="relative flex items-center justify-center h-full">
+      {/* Logo - Centered */}
+      <div className="relative z-10 flex items-center justify-center">
         <Image
           src={ohtsuboLogo}
           alt="Logomarca Ohtsubo Terapias"

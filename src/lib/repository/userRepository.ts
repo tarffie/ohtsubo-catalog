@@ -1,4 +1,4 @@
-import { User } from "@/lib/interfaces/User";
+import { User } from "@/lib/types";
 import { db } from "@/lib/database/db";
 import { UserSchema as users } from "../database/schema";
 import { getRowCount } from "../utils/dbUtils";
@@ -16,7 +16,9 @@ export const getUserById = async (id: string): Promise<User | undefined> => {
 
   return user;
 };
-export const getUserByEmail = async (email: string): Promise<User | undefined> => {
+export const getUserByEmail = async (
+  email: string,
+): Promise<User | undefined> => {
   const user = await db.query.UserSchema.findFirst({
     where: (users, { eq }) => eq(users.email, email),
   });
@@ -28,12 +30,24 @@ export const getUserByEmail = async (email: string): Promise<User | undefined> =
 export const createUser = async (id: string, payload: User) => {
   let user: User | undefined = await getUserById(id);
 
-  const { email, password, createdAt } = payload;
+  const {
+    email,
+    firstName,
+    lastName,
+    phoneCountryCode,
+    phoneNumber,
+    password,
+    createdAt,
+  } = payload;
 
   if (user === undefined) {
     user = {
       id: BigInt(await getRowCount(users)),
       email: email,
+      firstName: firstName,
+      lastName: lastName,
+      phoneCountryCode: phoneCountryCode,
+      phoneNumber: phoneNumber,
       password: password,
       createdAt: createdAt,
       updatedAt: createdAt,
@@ -42,8 +56,7 @@ export const createUser = async (id: string, payload: User) => {
     throw new Error("User already exists");
   }
 
-  const data = Object.values(user);
-  await db.insert(users).values(data);
+  await db.insert(users).values(user);
 };
 
 export const updateUser = async (payload: User) => {

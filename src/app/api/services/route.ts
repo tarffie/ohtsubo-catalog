@@ -1,6 +1,6 @@
 import { getServices, createService } from "@/lib/repository/serviceRepository";
 import { mapToService } from "@/lib/utils/map";
-import { Service } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/types";
 import { ServiceSchema } from "@/lib/entities/Service";
 
 import { /*NextRequest,*/ NextResponse } from "next/server";

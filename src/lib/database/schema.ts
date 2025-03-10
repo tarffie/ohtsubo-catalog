@@ -1,3 +1,4 @@
+import { InferSelectModel } from "drizzle-orm";
 import {
   text,
   real,
@@ -28,8 +29,14 @@ export const PurchaseSchema = pgTable("purchases", {
 
 export const UserSchema = pgTable("users", {
   id: bigint("id", { mode: "bigint" }).primaryKey().notNull().unique(),
-  username: varchar("username").notNull().unique(),
+  firstName: varchar("firstName").notNull(),
+  lastName: varchar("lastName").notNull(),
   email: varchar("email", { length: 255 }).notNull(),
+  // Phone number fields with Brazilian mobile specifics
+  phoneCountryCode: varchar("phone_country_code", { length: 4 })
+    .notNull()
+    .default("+55"), // Brazil's country code
+  phoneNumber: varchar("phone_number", { length: 15 }).notNull().unique(),
   password: varchar("password", { length: 255 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -67,4 +74,15 @@ export const CartItemsSchema = pgTable("cart_items", {
   priceAtTime: real("price_at_time"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const SessionSchema = pgTable("session", {
+  id: text("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => UserSchema.id),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
 });

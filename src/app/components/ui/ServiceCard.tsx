@@ -2,7 +2,7 @@
 
 import TemplateImage from "@/assets/servicoTemplate.jpg";
 
-import { Service as Service } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/types";
 
 import Image from "next/image";
 import Link from "next/link";

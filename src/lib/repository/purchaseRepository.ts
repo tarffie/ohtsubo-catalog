@@ -1,7 +1,7 @@
 import { db } from "@/lib/database/db";
 import { getRowCount } from "@/lib/utils/dbUtils";
-import { Purchase } from "@/lib/interfaces/Purchase";
-import { Service } from "@/lib/interfaces/Service";
+import { Purchase } from "@/lib/types";
+import { Service } from "@/lib/types";
 import {
   PurchaseSchema as purchases,
   PurchaseItemsSchema,
@@ -16,19 +16,7 @@ export const getPurchaseById = async (
     where: (purchases, { eq }) => eq(purchases.id, BigInt(id)),
   });
 
-  if (!purchase) return undefined;
-
-  const services = await db.query.PurchaseItemsSchema.findMany({
-    where: (items, { eq }) => eq(items.purchaseId, purchase.id), // Use purchase.id directly
-  });
-
-  const fixedPurchase: Purchase = {
-    ...purchase,
-    createdAt: purchase.createdAt,
-    services: services,
-  };
-
-  return fixedPurchase ?? undefined;
+  return purchase ?? undefined;
 };
 
 export const findUserPurchases = async (
@@ -38,21 +26,7 @@ export const findUserPurchases = async (
     where: (purchases, { eq }) => eq(purchases.userId, BigInt(userId)),
   });
 
-  const purchaseIds = purchases.map((purchase) => purchase.id);
-
-  const services = await db.query.PurchaseItemsSchema.findMany({
-    where: (items, { inArray }) => inArray(items.purchaseId, purchaseIds),
-  });
-
-  return (
-    purchases.map((purchase) => ({
-      ...purchase,
-      date: purchase.createdAt, // Add the required date field
-      services: services.filter(
-        (service) => service.purchaseId === purchase.id,
-      ),
-    })) ?? undefined
-  );
+  return purchases ?? undefined;
 };
 
 export const getPurchases = async (
@@ -110,24 +84,7 @@ export const createPurchase = async (
 };
 
 export const updatePurchase = async (purchase: Purchase) => {
-  const { price, status, services, createdAt } = purchase;
-
-  const id = BigInt(String(purchase.id));
-  const userId = BigInt(String(purchase.userId));
-
-  const updatedPurchase = {
-    id,
-    userId,
-    price,
-    status,
-    createdAt,
-    services,
-  };
-
-  await db
-    .update(purchases)
-    .set(updatedPurchase)
-    .where(eq(purchases, purchase.id));
+  await db.update(purchases).set(purchase).where(eq(purchases, purchase.id));
 };
 
 export const deletePurchase = async (id: string) => {

@@ -11,7 +11,7 @@ export default function Header() {
       <div className="mx-auto max-w-7xl">
         <div className="flex justify-between mb-4 text-center">
           <div className="grid grid-cols-2 justify-center md:items-stretch md:justify-start">
-            <div className="grid-cols-1 ml-4">
+            <div className="grid-cols-1 pl-4">
               <Link href={"/"}>
                 {" "}
                 <Image
@@ -24,7 +24,7 @@ export default function Header() {
             </div>
 
             {/* the freaking search bar.. */}
-            <div className="mt-5 grid-cols-1 pl-2 -mr-[69]">
+            <div className="mt-5 grid-cols-1 -mr-[38] lg:mr-0">
               <SearchBar />
             </div>
           </div>

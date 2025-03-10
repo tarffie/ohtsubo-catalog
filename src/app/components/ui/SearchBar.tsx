@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { fetchAllFromApi } from "@/lib/utils/apiUtils";
+import { fetchFromApi } from "@/lib/utils/apiUtils";
 import React from "react";
 import { useEffect, useState } from "react";
-import { Service } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/types";
 
 type Suggestion = [string[]];
 
@@ -16,22 +16,26 @@ const SearchBar = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchAllFromApi("services");
-        const results: Suggestion[] = data.map(
-          (entry: Service) =>
-            [[String(entry?.id), String(entry?.title).toLowerCase()]] as const,
-        );
+        const data = await fetchFromApi("services");
+        
+        if (data) {
+          const results: Suggestion[] = data.map(
+            (entry: Service) =>
+              [
+                [String(entry?.id), String(entry?.title).toLowerCase()],
+              ] as const,
+          );
+      
+          if (value.trim() === "") {
+            setSuggestions([]);
+            return;
+          }
 
-        if (value.trim() === "") {
-          setSuggestions([]);
-          return;
+          const items = results.filter((entry) =>
+            String(entry[0][1]).includes(String(value).toLowerCase()),
+          );
+          setSuggestions(items);
         }
-
-        const items = results.filter((entry) =>
-          String(entry[0][1]).includes(String(value).toLowerCase()),
-        );
-
-        setSuggestions(items);
       } catch (e) {
         console.error(`Error retrieving products: ${e}`);
       }

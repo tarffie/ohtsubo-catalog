@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import thumbnail from "@/assets/servicoTemplate.jpg";
 
-import { Service } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/types";
 import ItemCard from "./itemCard";
 
 interface Props {

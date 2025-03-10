@@ -4,7 +4,7 @@ import {
   updateService,
   /*deleteService,*/
 } from "@/lib/repository/serviceRepository";
-import { Service } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/types";
 /*import { cookies } from "next/headers";*/
 
 export async function GET(

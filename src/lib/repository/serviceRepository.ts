@@ -1,5 +1,5 @@
 import { db } from "@/lib/database/db";
-import { Service } from "@/lib/interfaces/Service";
+import { Service } from "@/lib/types";
 import { ServiceSchema as services } from "../database/schema";
 import { eq } from "drizzle-orm";
 
@@ -10,13 +10,8 @@ export const getServiceById = async (
     where: (services, { eq }) => eq(services.id, id),
   });
 
-  if (service !== undefined) {
-    const parsedService = {
-      ...service,
-      id: String(service?.id),
-    };
-
-    return parsedService;
+  if (service) {
+    return service;
   }
 
   throw new Error("coudn't find service");
@@ -25,17 +20,15 @@ export const getServiceById = async (
 export const getServices = async (): Promise<Array<Service>> => {
   const services = await db.query.ServiceSchema.findMany();
 
-  const parsedServices = services.map((service) => ({
-    ...service,
-    id: service.id.toString(),
-  }));
+  if (services) {
+    return services;
+  }
 
-  return parsedServices;
+  throw new Error("Couldn't find any services");
 };
 
 export const createService = async (service: Service) => {
-  const data = Object.values(service);
-  await db.insert(services).values(data);
+  await db.insert(services).values(service);
 };
 
 export const updateService = async (service: Service) => {
