@@ -1,12 +1,14 @@
-import type { User, Session } from "@/lib/types";
-import { eq } from "drizzle-orm";
-import { UserSchema, SessionSchema } from "../database/schema";
+import { db } from "@/lib/database/db";
+import type { Session, User } from "@/lib/types";
+import { config } from "@/lib/utils/config";
+import { sha256 } from "@oslojs/crypto/sha2";
 import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
 } from "@oslojs/encoding";
-import { sha256 } from "@oslojs/crypto/sha2";
-import { db } from "@/lib/database/db";
+import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
+import { SessionSchema, UserSchema } from "../database/schema";
 
 export function generateSessionToken(): string {
   const bytes = new Uint8Array(20);
@@ -17,7 +19,7 @@ export function generateSessionToken(): string {
 
 export async function createSession(
   token: string,
-  userId: string,
+  userId: bigint,
 ): Promise<Session> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 
@@ -74,8 +76,40 @@ export async function invalidateSession(sessionId: string): Promise<void> {
   await db.delete(SessionSchema).where(eq(SessionSchema.id, sessionId));
 }
 
-export async function invalidateAllSessions(userId: number): Promise<void> {
+export async function invalidateAllSessions(userId: bigint): Promise<void> {
   await db.delete(SessionSchema).where(eq(SessionSchema.userId, userId));
+}
+
+export function setSessionTokenCookie(
+  response: NextResponse,
+  token: string,
+  expiresAt: Date,
+): void {
+  if (config.NODE_ENV === "production") {
+    response.headers.set(
+      "Set-Cookie",
+      `session=${token}; HttpOnly; SameSite=Lax; Expires=${expiresAt.toUTCString()}; Path=/; Secure;`,
+    );
+  } else {
+    response.headers.set(
+      "Set-Cookie",
+      `session=${token}; HttpOnly; SameSite=Lax; Expires=${expiresAt.toUTCString()}; Path=/`,
+    );
+  }
+}
+
+export function deleteSessionTokenCookie(response: NextResponse) {
+  if (config.NODE_ENV === "production") {
+    response.headers.set(
+      "Set-Cookie",
+      `session=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/; Secure;`,
+    );
+  } else {
+    response.headers.set(
+      "Set-Cookie",
+      `session=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/`,
+    );
+  }
 }
 
 export type SessionValidationResult =

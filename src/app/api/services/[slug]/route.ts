@@ -11,7 +11,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { slug: string } },
 ) {
-  const { slug } = params;
+  const { slug } = await params;
 
   if (!slug || Array.isArray(slug)) {
     return NextResponse.json({ status: 404, error: "Service not found" });

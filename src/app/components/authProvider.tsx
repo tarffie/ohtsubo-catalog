@@ -7,7 +7,7 @@ import {
   PropsWithChildren,
 } from "react";
 
-import { User } from "@/lib/interfaces/User";
+import { User } from "@/lib/types";
 
 type AuthContext = {
   authToken?: string | null;

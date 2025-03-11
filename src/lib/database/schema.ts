@@ -78,7 +78,7 @@ export const CartItemsSchema = pgTable("cart_items", {
 
 export const SessionSchema = pgTable("session", {
   id: text("id").primaryKey(),
-  userId: integer("user_id")
+  userId: bigint("user_id", { mode: "bigint" })
     .notNull()
     .references(() => UserSchema.id),
   expiresAt: timestamp("expires_at", {

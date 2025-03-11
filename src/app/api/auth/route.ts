@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-
 import {
   generateSessionToken,
   createSession,
@@ -12,15 +11,12 @@ import { getUserByEmail } from "@/lib/repository/userRepository";
  */
 
 export async function POST(request: NextRequest) {
-  const origin = request.headers.get("Origin");
-
   try {
     // Await the formData() method to get the form data
     const formData = await request.formData();
 
     // Convert FormData to a plain object for easier handling
     const credentials = Object.fromEntries(formData.entries());
-
     const { email, password } = credentials;
 
     // now we check for our user informations
@@ -53,11 +49,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    
     const { id } = user;
     const token = generateSessionToken();
-    const session = createSession(token, id.toString());
-    
+    const session = createSession(token, id);
+
     return NextResponse.json({
       success: true,
       credentials,

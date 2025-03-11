@@ -10,6 +10,7 @@ dotenv.config();
  */
 function validateConfig(): Config {
   const {
+    NODE_ENV,
     POSTGRESDB_USER,
     POSTGRESDB_ROOT_PASSWORD,
     POSTGRESDB_URL,
@@ -18,6 +19,7 @@ function validateConfig(): Config {
   } = process.env;
 
   const requiredEnvVars = {
+    NODE_ENV,
     POSTGRESDB_USER,
     POSTGRESDB_ROOT_PASSWORD,
     POSTGRESDB_URL,
@@ -36,6 +38,7 @@ function validateConfig(): Config {
   }
 
   return {
+    NODE_ENV: NODE_ENV!,
     POSTGRESDB_USER: POSTGRESDB_USER!,
     POSTGRESDB_ROOT_PASSWORD: POSTGRESDB_ROOT_PASSWORD!,
     POSTGRESDB_URL: POSTGRESDB_URL!,

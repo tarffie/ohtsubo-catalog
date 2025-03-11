@@ -8,14 +8,21 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const services = await getServices();
-    if (!services) {
+    if (!services || services.length === 0) {
       return NextResponse.json(
         { success: false, error: "Not found", status: 404 },
         { status: 404 },
       );
     }
-    return NextResponse.json({ success: true, services, status: 200 });
+
+    const parsedServices = services.map((service) => ({
+      ...service,
+      id: service.id.toString(), // Convert bigint to string
+    }));
+
+    return NextResponse.json({ success: true, parsedServices, status: 200 });
   } catch (e) {
+    console.error("Error in GET /api/services:", e); // Log the error
     return NextResponse.json(
       { success: false, error: "Request couldn't be completed", status: 500 },
       { status: 500 },
