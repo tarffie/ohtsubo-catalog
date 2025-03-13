@@ -3,6 +3,7 @@ import { db } from "@/lib/database/db";
 import { UserSchema as users } from "../database/schema";
 import { getRowCount } from "../utils/dbUtils";
 import { eq } from "drizzle-orm";
+import { hashPassword } from "../utils/hashPassword";
 
 export const getUsers = async (): Promise<Array<User> | undefined> => {
   const users = await db.query.UserSchema.findMany();
@@ -27,11 +28,14 @@ export const getUserByEmail = async (
   return user;
 };
 
-export const createUser = async (id: string, payload: User) => {
-  let user: User | undefined = await getUserById(id);
+export const createUser = async (email: string, payload: User) => {
+  let user: User | undefined = await getUserByEmail(email);
+
+  if (user) {
+    throw new Error("User already exists");
+  }
 
   const {
-    email,
     firstName,
     lastName,
     phoneCountryCode,
@@ -41,6 +45,8 @@ export const createUser = async (id: string, payload: User) => {
   } = payload;
 
   if (user === undefined) {
+    const hashedPassword = await hashPassword(password);
+
     user = {
       id: BigInt(await getRowCount(users)),
       email: email,
@@ -48,15 +54,14 @@ export const createUser = async (id: string, payload: User) => {
       lastName: lastName,
       phoneCountryCode: phoneCountryCode,
       phoneNumber: phoneNumber,
-      password: password,
+      password: hashedPassword,
       createdAt: createdAt,
       updatedAt: createdAt,
     };
-  } else {
-    throw new Error("User already exists");
   }
 
   await db.insert(users).values(user);
+  return user;
 };
 
 export const updateUser = async (payload: User) => {

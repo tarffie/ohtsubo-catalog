@@ -55,9 +55,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      credentials,
+      session,
       status: 200,
     });
+
   } catch (error) {
     console.error("Error processing form data:", error);
     return NextResponse.json(
@@ -72,5 +73,6 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  return NextResponse.json({ body: "hello, GET", status: 200 });
+  const hello = "hello, world";
+  return NextResponse.json({ hello, status: 200 }, { status: 200 });
 }
