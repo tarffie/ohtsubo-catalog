@@ -7,54 +7,57 @@ import { hashPassword } from "@/lib/utils/hashPassword";
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    if (formData) {
-      try {
-        let {
-          firstName,
-          lastName,
-          email,
-          password,
-          phoneCountryCode,
-          phoneNumber,
-        } = Object.fromEntries(formData);
-
-        const cachePassword = password;
-        password = await hashPassword(String(cachePassword));
-        const currentDate = Date.now();
-
-        const newUser = user.parse({
-          firstName,
-          lastName,
-          email,
-          password,
-          phoneCountryCode,
-          phoneNumber,
-          currentDate,
-          Date,
-        });
-
-        let result = await createUser(String(email), newUser as User);
-
-        if (!result) {
-          throw new Error("user already exists");
-        }
-
-        const parsedResult = {
-          ...result,
-          id: String(result.id),
-        };
-
-        return NextResponse.json(
-          { success: true, parsedResult, status: 200 },
-          { status: 200 },
-        );
-      } catch (e) {
-        const error = e as Error;
-        throw new Error(error.message);
-      }
+    if (!formData) {
+      throw new Error("No form data provided");
     }
+
+    // Extract form data
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      phoneCountryCode,
+      phoneNumber,
+    } = Object.fromEntries(formData);
+
+    // Hash the password
+    const hashedPassword = await hashPassword(String(password));
+
+    // Create new user objectn
+    const newUser = user.parse({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      phoneCountryCode,
+      phoneNumber,
+      currentDate: Date.now(),
+      Date,
+    });
+
+    // Attempt to create the user
+    const result = await createUser(String(email), newUser as User);
+    if (!result) {
+      throw new Error("User already exists");
+    }
+
+    // Prepare the response
+    const parsedResult = {
+      ...result,
+      id: String(result.id),
+    };
+
+    return NextResponse.json(
+      { success: true, parsedResult, status: 200 },
+      { status: 200 },
+    );
   } catch (e) {
     const error = e as Error;
+
+    // Log the error for debugging
+    console.error("Error in POST request:", error.message);
+
     return NextResponse.json(
       {
         success: false,
