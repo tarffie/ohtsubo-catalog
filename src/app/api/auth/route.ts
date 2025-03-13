@@ -5,6 +5,7 @@ import {
   createSession,
 } from "@/lib/repository/sessionRepository";
 import { getUserByEmail } from "@/lib/repository/userRepository";
+import { hashPassword } from "@/lib/utils/hashPassword";
 
 /**
  * This method receives formData and authenticate the user with it
@@ -33,9 +34,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const hashedPassword = await hashPassword(String(password));
+
     const isValidPassword = await bcrypt.compare(
       password.toString(),
-      user.password,
+      hashedPassword,
     );
 
     if (!isValidPassword) {
@@ -51,20 +54,25 @@ export async function POST(request: NextRequest) {
 
     const { id } = user;
     const token = generateSessionToken();
-    const session = createSession(token, id);
+    const session = await createSession(token, id);
+
+    const parsedSession = {
+      ...session,
+      userId: String(session.userId),
+    };
 
     return NextResponse.json({
       success: true,
-      session,
+      parsedSession,
       status: 200,
     });
-
-  } catch (error) {
+  } catch (e) {
+    const error = e as Error;
     console.error("Error processing form data:", error);
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to process form data",
+        error: `Failed with error: ${error.message}`,
         status: 400,
       },
       { status: 400 },

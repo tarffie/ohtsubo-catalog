@@ -20,17 +20,34 @@ export function generateSessionToken(): string {
 export async function createSession(
   token: string,
   userId: bigint,
+  expiresInMs: number = 1000 * 60 * 60 * 24 * 30, // Default: 30 days
 ): Promise<Session> {
-  const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+  try {
+    const existingSession = await db.query.SessionSchema.findFirst({
+      where: (sessions, { eq }) => eq(sessions.userId, userId),
+    });
 
-  const session: Session = {
-    id: sessionId,
-    userId,
-    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
-  };
+    if (existingSession) {
+      await invalidateSession(existingSession.id);
+    }
 
-  await db.insert(SessionSchema).values(session);
-  return session;
+    const sessionId = encodeHexLowerCase(
+      sha256(new TextEncoder().encode(token)),
+    );
+
+    const newSession: Session = {
+      id: sessionId,
+      userId,
+      expiresAt: new Date(Date.now() + expiresInMs), // Use dynamic expiration time
+    };
+
+    await db.insert(SessionSchema).values(newSession);
+
+    return newSession;
+  } catch (error) {
+    console.error("Failed to create session:", error);
+    throw new Error("Failed to create session");
+  }
 }
 
 export async function validateSessionToken(
